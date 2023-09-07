@@ -11,10 +11,6 @@ public class Blob {
     {
         try
         {
-            //make the objects folder if it doesn't exist
-            File objects = new File ("./objects");
-            objects.mkdirs();
-
             //read in the file contents
             StringBuilder sb = new StringBuilder();
             BufferedReader br = new BufferedReader(new FileReader(path));
