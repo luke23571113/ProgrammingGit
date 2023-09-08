@@ -23,7 +23,7 @@ public class Blob {
             }
             br.close();
 
-            hashcode = getHashString(sb.toString());
+            hashcode = getHashFromString(sb.toString());
             File newFile = new File ("./objects/" + hashcode);
             newFile.createNewFile();
         }
@@ -33,7 +33,12 @@ public class Blob {
         }
     }
 
-    private String getHashString (String input) throws Exception
+    public String getHashcode ()
+    {
+        return hashcode;
+    }
+
+    private String getHashFromString (String input) throws Exception
     {
         try
         {
