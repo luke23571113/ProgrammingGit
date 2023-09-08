@@ -1,4 +1,3 @@
-import java.util.*;
 import java.io.*;
 import java.security.*;
 
@@ -7,10 +6,14 @@ public class Blob {
 
     //nb: do not add multiple entries
 
-    public Blob (String path)
+    private String file;
+    private String hashcode;
+
+    public Blob (String path) throws Exception
     {
         try
         {
+            path = file;
             //read in the file contents
             StringBuilder sb = new StringBuilder();
             BufferedReader br = new BufferedReader(new FileReader(path));
@@ -20,17 +23,17 @@ public class Blob {
             }
             br.close();
 
-            String hash = getHashString(sb.toString());
-            File newFile = new File ("./objects/" + hash);
+            hashcode = getHashString(sb.toString());
+            File newFile = new File ("./objects/" + hashcode);
             newFile.createNewFile();
         }
         catch (Exception e)
         {
-            System.out.println(e.getMessage());
+            throw e;
         }
     }
 
-    public String getHashString (String input)    
+    private String getHashString (String input) throws Exception
     {
         try
         {
@@ -49,8 +52,7 @@ public class Blob {
         }
         catch (Exception e)
         {
-            System.out.println(e.getMessage());
-            return ""; 
+            throw e;
         }
     }
 }
