@@ -13,6 +13,9 @@ public class GitTester
             git.init();
 
             git.add("example.txt");
+            git.add("example2.txt");
+
+            git.remove("example.txt");
             
             // Blob b = new Blob("example.txt" ) ;
         }
