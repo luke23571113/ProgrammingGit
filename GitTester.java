@@ -9,10 +9,12 @@ public class GitTester
         // System.out.println("finished program");
         try
         {
-            // Git git = new Git ();
-            // git.init();
+            Git git = new Git ();
+            git.init();
+
+            git.add("example.txt");
             
-            Blob b = new Blob("example.txt" ) ;
+            // Blob b = new Blob("example.txt" ) ;
         }
         catch (Exception e)
         {

@@ -32,7 +32,7 @@ public class Git {
     {
         try
         {
-            Blob blob = new Blob("file");
+            Blob blob = new Blob(file);
 
             hashCodes.put(file, blob.getHashcode());
             updateIndex();

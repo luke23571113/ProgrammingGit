@@ -22,6 +22,7 @@ public class Blob {
             //read in the file contents
             StringBuilder sb = new StringBuilder();
             BufferedReader br = new BufferedReader(new FileReader(file));
+
             while (br.ready())
             {
                 sb.append ((char) br.read());
