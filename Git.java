@@ -28,14 +28,38 @@ public class Git {
         }
     }
 
-    public void add (String file)
+    public void add (String file) throws Exception
     {
+        try
+        {
+            Blob blob = new Blob("file");
 
+            hashCodes.put(file, blob.getHashcode());
+            updateIndex();
+        }
+        catch (Exception e)
+        {
+            throw e; 
+        }
     }
 
-    public void remove (String file)
+    public void remove (String file) throws Exception
     {
+        try
+        {
+            //first check if the file is even added
+            if (!hashCodes.containsKey(file)) throw new Exception ("Error: File not found");
 
+            //remove it from the hashmap
+            hashCodes.remove(file);
+            updateIndex(); //update the index file
+
+            //nb: do not delete the file from objects
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
     }
 
     //method that will fill index with all the entries in hashCodes
