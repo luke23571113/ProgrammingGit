@@ -12,18 +12,19 @@ public class Git {
         hashCodes = new HashMap<String, String>();
     }    
 
-    public void init ()
+    public void init () throws Exception
     {
         try
         {
-            //make the objects folder if it doesn't exist
-            File objects = new File ("./objects");
-            objects.mkdirs();
+            //will make the objects folder if doesn't exist already 
+            Blob blob = new Blob("./");
 
+            //will create an index file
+            updateIndex();
         }
         catch (Exception e)
         {
-            System.out.println(e.getMessage());
+            throw e;
         }
     }
 
@@ -38,10 +39,8 @@ public class Git {
     }
 
     //method that will fill index with all the entries in hashCodes
-    private void updateIndex ()
+    private void updateIndex () throws Exception
     {
-        hashCodes.put("a", "b");
-        hashCodes.put("b", "c");
         try
         {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("index")));
@@ -56,7 +55,7 @@ public class Git {
         }
         catch (Exception e)
         {
-            System.out.println("Exception : " + e);
+            throw e;
         }
     }
 }
