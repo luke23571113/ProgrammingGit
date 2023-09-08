@@ -2,12 +2,22 @@ import java.util.*;
 
 public class GitTester
 {
-    public static void main (String[] args)
+    public static void main (String[] args) throws Exception
     {
         // Blob blob = new Blob ("example.txt");
 
         // System.out.println("finished program");
-        Git git = new Git ();
-        git.updateIndex();
+        try
+        {
+            // Git git = new Git ();
+            // git.init();
+            
+            Blob b = new Blob("example.txt" ) ;
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+
     }
 }

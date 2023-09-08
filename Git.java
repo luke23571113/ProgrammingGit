@@ -16,8 +16,8 @@ public class Git {
     {
         try
         {
-            //will make the objects folder if doesn't exist already 
-            Blob blob = new Blob("./");
+            File objects = new File ("./objects");
+            objects.mkdirs();
 
             //will create an index file
             updateIndex();
