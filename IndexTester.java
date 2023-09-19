@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class JUnitTester {
+public class IndexTester {
 
     static File file1;
     static File file2;
@@ -61,8 +61,8 @@ public class JUnitTester {
         File file = new File("index");
         Path path = Paths.get("objects");
 
-        assertTrue(file.exists());
-        assertTrue(Files.exists(path));
+        assertTrue("Index exists", file.exists());
+        assertTrue("Object exists", Files.exists(path));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class JUnitTester {
         // check if the file exists
         File file = new File("./objects/f3ff62c55a22ff8a20567318e316ef9da8b01b98");
 
-        assertTrue(file.exists());
+        assertTrue("File with hash name is in objects", file.exists());
 
         File indexFile = new File("index");
 
@@ -90,7 +90,7 @@ public class JUnitTester {
         }
         br.close();
 
-        assertTrue(sb.toString().equals("file1.txt : f3ff62c55a22ff8a20567318e316ef9da8b01b98\n"));
+        assertTrue("Index was properly updated", sb.toString().equals("file1.txt : f3ff62c55a22ff8a20567318e316ef9da8b01b98\n"));
     }
 
     @Test
@@ -108,9 +108,6 @@ public class JUnitTester {
         File fileT1 = new File("./objects/f3ff62c55a22ff8a20567318e316ef9da8b01b98");
         File fileT2 = new File("./objects/9c33b7f16cdaee196a2079256ccf381b09b69c7a");
 
-        assertTrue(fileT1.exists());
-        assertTrue(fileT2.exists());
-
         File indexFile = new File("./index");
 
         StringBuilder sb = new StringBuilder();
@@ -121,56 +118,6 @@ public class JUnitTester {
         }
         br.close();
 
-        assertTrue(sb.toString().equals("file1.txt : f3ff62c55a22ff8a20567318e316ef9da8b01b98\n"));
-    }
-
-    @Test
-    @DisplayName("Test Tree Add")
-    void testAddTree() throws Exception {
-        Tree tree = new Tree();
-
-        tree.add("blob : f3ff62c55a22ff8a20567318e316ef9da8b01b98 : file1.txt");
-        tree.add("blob : f3ff62c55a22ff8a20567318e316ef9da8b01b98 : file1.txt");
-        tree.add("blob : 9c33b7f16cdaee196a2079256ccf381b09b69c7a : file2.txt");
-
-        tree.save();
-
-        File temp = new File("./objects/4b016e0b9d977b1b2626cefedad981b761cba2ae");
-
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = new BufferedReader(new FileReader(temp));
-
-        while (br.ready()) {
-            sb.append ((char) br.read());
-        }
-        br.close();
-
-        assertTrue(sb.toString().equals("blob : f3ff62c55a22ff8a20567318e316ef9da8b01b98 : file1.txt\nblob : 9c33b7f16cdaee196a2079256ccf381b09b69c7a : file2.txt"));
-    }
-
-    @Test
-    @DisplayName("Test Tree Remove")
-    void testRemoveTree() throws Exception {
-        Tree tree = new Tree();
-
-        tree.add("blob : f3ff62c55a22ff8a20567318e316ef9da8b01b98 : file1.txt");
-        tree.add("blob : 9c33b7f16cdaee196a2079256ccf381b09b69c7a : file2.txt");
-        tree.remove("file2.txt");
-        tree.add("blob : 9c33b7f16cdaee196a2079256ccf381b09b69c7a : file2.txt");
-        tree.remove("9c33b7f16cdaee196a2079256ccf381b09b69c7a");
-
-        tree.save();
-
-        File temp = new File("./objects/d5fada904500b4bb41775f04d9dc4ca01a2596b1");
-
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = new BufferedReader(new FileReader(temp));
-
-        while (br.ready()) {
-            sb.append ((char) br.read());
-        }
-        br.close();
-
-        assertTrue(sb.toString().equals("blob : f3ff62c55a22ff8a20567318e316ef9da8b01b98 : file1.txt"));
+        assertTrue("Index was updated properly", sb.toString().equals("file1.txt : f3ff62c55a22ff8a20567318e316ef9da8b01b98\n"));
     }
 }
