@@ -1,0 +1,113 @@
+[
+    {
+        "className": "Tree",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "init",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "add",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "__TEST_FILE_NAME__"
+                ]
+            },
+            {
+                "methodName": "remove",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "__TEST_FILE_NAME__"
+                ]
+            },
+            {
+                "methodName": "updateIndex",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    },
+    {
+        "className": "Blob",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [
+                    "String"
+                ],
+                "values": [
+                    "__TEST_FILE_NAME__"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "getHashcode",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "getHashFromString",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "__TEST_FILE_NAME__"
+                ]
+            }
+        ]
+    },
+    {
+        "className": "Tree",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "getHashFromString",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "__TEST_STRING_NAME__"
+                ]
+            },
+            {
+                "methodName": "add",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "__TEST_INPUT_NAME__"
+                ]
+            },
+            {
+                "methodName": "remove",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "__TEST_INPUT_NAME__"
+                ]
+            },
+            {
+                "methodName": "save",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    }
+]

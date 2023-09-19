@@ -1,13 +1,12 @@
 import java.io.File;
-import java.nio.BufferOverflowException;
 import java.util.*; 
 import java.io.*; 
 
-public class Git {
+public class Index {
     
     private HashMap<String, String> hashCodes;
 
-    public Git ()
+    public Index ()
     {
         hashCodes = new HashMap<String, String>();
     }    
@@ -18,6 +17,8 @@ public class Git {
         {
             File objects = new File ("./objects");
             objects.mkdirs();
+            File index = new File("./index");
+            index.createNewFile();
 
             //will create an index file
             updateIndex();
@@ -67,15 +68,17 @@ public class Git {
     {
         try
         {
-            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("index")));
-
-            for (String key : hashCodes.keySet())
-            {
-                String hash = hashCodes.get(key);
-                pw.println(key + " : " + hash);
+            StringBuilder sb = new StringBuilder();
+            File indexFile = new File("./index");
+            for (Map.Entry<String,String> mapElement : hashCodes.entrySet()) {
+                String key = mapElement.getKey();
+                String lock = mapElement.getValue();
+                sb.append(key + " : " + lock + "\n");
             }
-
-            pw.close();
+            FileWriter writer = new FileWriter(indexFile);
+            writer.write(sb.toString());
+            writer.flush();
+            writer.close();
         }
         catch (Exception e)
         {
