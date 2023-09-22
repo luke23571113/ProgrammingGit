@@ -2,8 +2,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 public class Commit {
 
@@ -45,8 +47,9 @@ public class Commit {
     }
 
     public String getDate() {
-        LocalDate localDate = LocalDate.now();
-        return dateTimeFormatter.format(localDate);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(calendar.getTime());
     }
 
     public void writeToObjects() throws Exception {
@@ -66,4 +69,8 @@ public class Commit {
 
     }
 
+    public String generateSha() throws Exception {
+        String fileContents = tree + "\n" + lastCommit + "\n" + nextCommit + "\n" + author + "\n" + date + "\n" + summary;
+        return Blob.getHashFromString(fileContents);
+    }
 }
