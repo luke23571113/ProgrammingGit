@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Commit {
 
     String summary;
@@ -6,6 +9,8 @@ public class Commit {
     String lastCommit;
     String nextCommit;
     String tree;
+
+    DateTimeFormatter dateTimeFormatter;
 
     public Commit(String summary, String author, String lastCommit) throws Exception {
 
@@ -16,6 +21,18 @@ public class Commit {
 
         tree = createTree();
         this.date = getDate();
+        
+    }
+
+    public Commit(String summary, String author) throws Exception {
+
+        this.summary = summary;
+        this.author = author;
+        this.nextCommit = "";
+
+        tree = createTree();
+        this.date = getDate();
+
     }
 
     public static String createTree() throws Exception {
@@ -23,7 +40,8 @@ public class Commit {
         return tree.save();
     }
 
-    public static String getDate() {
-        return "";
+    public String getDate() {
+        LocalDate localDate = LocalDate.now();
+        return dateTimeFormatter.format(localDate);
     }
 }
