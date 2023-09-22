@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +22,7 @@ import org.junit.jupiter.api.Test;
 public class CommitTester {
 
     @BeforeAll
-    static void setUpBeforeClass() throws Exception {
+    static void setup() throws Exception {
 
         File objects = new File("objects");
         if (!objects.exists()) {
@@ -35,7 +36,7 @@ public class CommitTester {
     }
 
     @AfterAll
-    static void tearDownAfterClass() throws Exception {
+    static void delete() throws Exception {
 
         File objectsFolder = new File("objects/");
         String[] entries = objectsFolder.list();
@@ -71,7 +72,23 @@ public class CommitTester {
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        assertEquals("commit class generating date wrong", commit.getDate(), simpleDateFormat.format(calendar.getTime()));
+        assertEquals("commit class generating date wrong", commit.getDate(),
+                simpleDateFormat.format(calendar.getTime()));
+    }
+
+    @Test
+    @DisplayName("Test that write to objects works, which means that generate sha works")
+    void testWriteToObjects() throws Exception {
+        Commit commit = new Commit("summary", "ryan", "c22b5f9178342609428d6f51b2c5af4c0bde6a42");
+
+        commit.writeToObjects();
+
+        // Confirm sure the hash of the file created is correct
+        File file = new File("objects/b42de14e4a34f084f69dcbfe29b266b10fe10719");
+        assertTrue(file.exists());
+
+        // Confirm the object file contents match what is expected
+        assertEquals("da39a3ee5e6b4b0d3255bfef95601890afd80709\n" + "c22b5f9178342609428d6f51b2c5af4c0bde6a42\n" + "\n" + "ryan\n" + "2023-09-22\n" + "summary", Files.readString(Path.of("objects/b42de14e4a34f084f69dcbfe29b266b10fe10719")));
     }
 
 }
