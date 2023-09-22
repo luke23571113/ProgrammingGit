@@ -63,7 +63,7 @@ public class Tree {
         }
     }
 
-    public void save() throws Exception {
+    public String save() throws Exception {
         try {
             // read in the file contents
             StringBuilder sb = new StringBuilder();
@@ -84,6 +84,8 @@ public class Tree {
             writer.write(sb.toString());
             writer.flush();
             writer.close();
+
+            return hashcode;
         } catch (Exception e) {
             throw e;
         }
