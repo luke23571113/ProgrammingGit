@@ -49,7 +49,14 @@ public class Blob {
         return hashcode;
     }
 
-    private String getHashFromString (String input) throws Exception
+    //luke i made it public static
+        //luke i made it public static
+            //luke i made it public static
+                //luke i made it public static
+                    //luke i made it public static
+                        //luke i made it public static
+                            //luke i made it public static
+    public static String getHashFromString (String input) throws Exception
     {
         try
         {
