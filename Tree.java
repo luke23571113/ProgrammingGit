@@ -107,10 +107,23 @@ public class Tree {
 
         for (File f : fileList) //loop through each file and add tree
         {
-            String filePath = directoryPath + "/" + f.getName();
-            Blob b = new Blob (filePath); //are you meant to make the files a blob? ig it can't hurt ...
+            if (f.isFile ())
+            {
+                String filePath = directoryPath + "/" + f.getName();
+                Blob b = new Blob (filePath); //are you meant to make the files a blob? ig it can't hurt ...
 
-            this.add("blob : " + b.getHashcode() + " : " + filePath);
+                add("blob : " + b.getHashcode() + " : " + filePath);
+            }
+            else if (f.isDirectory())
+            { 
+                //need to recurse 
+                Tree subTree = new Tree();
+                String tempPath = f.getPath();
+                subTree.addDirectory(tempPath);
+                String hash = subTree.save();
+
+                add("tree : " + hash + " : " + tempPath);
+            }
         }
     }
 

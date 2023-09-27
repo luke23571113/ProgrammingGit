@@ -1,11 +1,6 @@
 import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*; 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -127,5 +122,41 @@ public class TreeTester {
 
         assertTrue ("tree is missing expected files", contents.contains("./test1/examplefile1.txt"));
         assertTrue ("tree did not hash correctly", contents.contains("6cecd98f685b1c9bfce96f2bbf3f8f381bcc717e"));
+    }
+
+    @Test
+    void testAddDirectoryAdvanced () throws Exception
+    {
+        //create all the stuff that we need
+        File subDir = new File("./folder");
+        subDir.mkdir();
+        subDir = new File ("./folder/test2");
+        subDir.mkdir();
+        subDir = new File ("./folder/test3");
+        subDir.mkdir();
+
+        FileWriter fw = new FileWriter("./folder/examplefile1.txt");
+        fw.write("the sha of this is ... ?");
+        fw.close();
+        fw = new FileWriter("./folder/examplefile2.txt");
+        fw.write("zomg wut are u doing. LAWL");
+        fw.close(); 
+        fw = new FileWriter("./folder/examplefile3.txt");
+        fw.write("LOL please dont read this.  Good job being thorough tho!");
+        fw.close();
+
+        fw = new FileWriter ("./folder/test3/asd.txt");
+        fw.write("ribbit");
+        fw.close();
+
+        Tree t = new Tree();
+        t.addDirectory("./folder");
+
+        String hash = t.save();
+        String contents = Utils.readFromFile("./objects/" + hash);
+
+        assertTrue ("tree does not contain files from first folder", contents.contains("./folder/examplefile1.txt"));
+        assertTrue ("tree does not contain files from the sub directories", contents.contains ("tree : 96d7cb7cc8438a6836c7693266fcb886c84b53fa : ./folder/test3"));
+        //this creates some weird extra file somewhere, can't exactly figure out what's going on ... 
     }
 }
