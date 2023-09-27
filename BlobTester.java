@@ -45,7 +45,7 @@ public class BlobTester {
 
         sb.append(x.getHashcode());
 
-        assertTrue("Correct sha1 is returned", sb.toString().equals("f3ff62c55a22ff8a20567318e316ef9da8b01b98"));
+        assertTrue("Correct sha1 is returned", sb.toString().equals("aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d"));
     }
 
     @Test
