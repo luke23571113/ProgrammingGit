@@ -27,7 +27,7 @@ public class BlobTester {
         file1 = new File("./file1.txt");
         file2 = new File("./file2.txt");
         FileWriter writer = new FileWriter(file1);
-        writer.write("lol\nlollol");
+        writer.write("hello");
         writer.flush();
         writer.close();
         FileWriter writer2 = new FileWriter(file2);
@@ -53,11 +53,9 @@ public class BlobTester {
     void createBlob() throws Exception {
         Blob x = new Blob("file1.txt");
         
-        Path path = Paths.get("objects/f3ff62c55a22ff8a20567318e316ef9da8b01b98");
+        File temp = new File("./objects/aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d");
 
-        assertTrue("Blob file exists", Files.exists(path));
-
-        File temp = new File("objects/f3ff62c55a22ff8a20567318e316ef9da8b01b98");
+        assertTrue ("Blob file exists", temp.isFile());
 
         StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(new FileReader(temp));
@@ -67,6 +65,6 @@ public class BlobTester {
         }
         br.close();
 
-        assertTrue("Blob file was written correctly", sb.toString().equals("lol\nlollol"));
+        assertTrue("Blob file was written correctly", sb.toString().equals("hello"));
     }
 }

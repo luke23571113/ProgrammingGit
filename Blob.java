@@ -33,10 +33,10 @@ public class Blob {
             hashcode = getHashFromString(sb.toString());
             File newFile = new File ("./objects/" + hashcode);
             newFile.createNewFile();
-            // FileWriter writer = new FileWriter(newFile);
-            // writer.write(sb.toString());
-            // writer.flush();
-            // writer.close();
+
+            PrintWriter pw = new PrintWriter(new BufferedWriter( new FileWriter ("./objects/" + hashcode)));
+            pw.print(sb.toString());
+            pw.close();
         }
         catch (Exception e)
         {
