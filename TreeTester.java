@@ -156,7 +156,6 @@ public class TreeTester {
         String contents = Utils.readFromFile("./objects/" + hash);
 
         assertTrue ("tree does not contain files from first folder", contents.contains("./folder/examplefile1.txt"));
-        assertTrue ("tree does not contain files from the sub directories", contents.contains ("tree : 96d7cb7cc8438a6836c7693266fcb886c84b53fa : ./folder/test3"));
-        //this creates some weird extra file somewhere, can't exactly figure out what's going on ... 
+        assertTrue ("tree does not contain files from the sub directories", contents.contains ("tree : 06275a0db4c2fea08154ec7aeca605ca861c535f : ./folder/test3"));
     }
 }
