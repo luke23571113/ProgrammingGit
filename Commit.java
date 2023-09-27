@@ -52,7 +52,7 @@ public class Commit {
         return simpleDateFormat.format(calendar.getTime());
     }
 
-    public void writeToObjects() throws Exception {
+    public String writeToObjects() throws Exception {
 
         //whatup luke
         StringBuilder stringBuilder = new StringBuilder(tree + "\n" + lastCommit + "\n" + author + "\n" + date + "\n" + summary);
@@ -67,6 +67,7 @@ public class Commit {
         fileWriter.write(stringBuilder.toString());
         fileWriter.close();
 
+        return hash; 
     }
 
     public String generateSha() throws Exception {

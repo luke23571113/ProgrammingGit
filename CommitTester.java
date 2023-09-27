@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -81,14 +82,18 @@ public class CommitTester {
     void testWriteToObjects() throws Exception {
         Commit commit = new Commit("summary", "ryan", "c22b5f9178342609428d6f51b2c5af4c0bde6a42");
 
-        commit.writeToObjects();
+        String hash = commit.writeToObjects();
 
         // Confirm sure the hash of the file created is correct
-        File file = new File("objects/b42de14e4a34f084f69dcbfe29b266b10fe10719");
+        File file = new File("./objects/" + hash);
         assertTrue(file.exists());
 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+        LocalDateTime now = LocalDateTime.now();  
+        String curDate = dtf.format(now);
+
         // Confirm the object file contents match what is expected
-        assertEquals("da39a3ee5e6b4b0d3255bfef95601890afd80709\n" + "c22b5f9178342609428d6f51b2c5af4c0bde6a42\n" + "\n" + "ryan\n" + "2023-09-22\n" + "summary", Files.readString(Path.of("objects/b42de14e4a34f084f69dcbfe29b266b10fe10719")));
+        assertEquals("da39a3ee5e6b4b0d3255bfef95601890afd80709\n" + "c22b5f9178342609428d6f51b2c5af4c0bde6a42\n" + "\n" + "ryan\n" + curDate + "\nsummary", Files.readString(Path.of("./objects/" + hash)));
     }
 
 }

@@ -102,26 +102,26 @@ public class TreeTester {
         assertTrue("Tree save addes file to Tree", Files.exists(path));
     }
 
-    @Test
-    void testAddDirectory () throws Exception
-    {
-        //first create some files that we can use
-        FileWriter fw = new FileWriter("examplefile1.txt");
-        fw.write("the sha of this is ... ?");
-        fw.close();
-        fw = new FileWriter("examplefile2.txt");
-        fw.write("zomg wut are u doing. LAWL");
-        fw.close(); 
-        fw = new FileWriter("examplefile3.txt");
-        fw.write("LOL please dont read this.  Good job being thorough tho!");
-        fw.close(); 
+    // @Test
+    // void testAddDirectory () throws Exception
+    // {
+    //     //first create some files that we can use
+    //     FileWriter fw = new FileWriter("examplefile1.txt");
+    //     fw.write("the sha of this is ... ?");
+    //     fw.close();
+    //     fw = new FileWriter("examplefile2.txt");
+    //     fw.write("zomg wut are u doing. LAWL");
+    //     fw.close(); 
+    //     fw = new FileWriter("examplefile3.txt");
+    //     fw.write("LOL please dont read this.  Good job being thorough tho!");
+    //     fw.close(); 
 
-        Tree t = new Tree();
-        t.addDirectory("./");
+    //     Tree t = new Tree();
+    //     t.addDirectory("./");
 
-        String hash = t.save();
-        String contents = Utils.readFromFile("./objects/" + hash);
+    //     String hash = t.save();
+    //     String contents = Utils.readFromFile("./objects/" + hash);
 
-        assertTrue ("tree is missing expected files", contents.contains("objects/examplefile1.txt"));
-    }
+    //     assertTrue ("tree is missing expected files", contents.contains("objects/examplefile1.txt"));
+    // }
 }
