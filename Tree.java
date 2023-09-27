@@ -95,19 +95,22 @@ public class Tree {
         }
     }
 
-    public void addDirectory (String path) throws Exception
+    public void addDirectory (String directoryPath) throws Exception
     {
-        File dir = new File (path);
+        File dir = new File (directoryPath);
         if (!dir.isDirectory())
         {
-            throw new Exception ("Could not find the directory path");
+            throw new Exception ("Invalid directory path");
         }
 
         File[] fileList = dir.listFiles();  //list of all the files
 
         for (File f : fileList) //loop through each file and add tree
         {
-            this.add("./" + path + "/" + f.getName());
+            String filePath = directoryPath + "/" + f.getName();
+            Blob b = new Blob (filePath); //are you meant to make the files a blob? ig it can't hurt ...
+
+            this.add("blob : " + b.getHashcode() + " : " + filePath);
         }
     }
 
