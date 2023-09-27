@@ -41,21 +41,25 @@ public class Tree {
 
     public void remove(String input) {
         try {
-            for (int i = 0; i < values.size(); i++) {
-                if (input.contains(".txt")) {
-                    if (values.get(i).substring(0, 4).equals("blob")) {
-                        if (values.contains(input)) {
-                            values.remove(i);
-                            break;
-                        }
-                    }
-                } else {
-                    if (values.get(i).substring(0, 4).equals("tree")) {
-                        if (values.contains(input)) {
-                            values.remove(i);
-                            break;
-                        }
-                    }
+            for (int i = values.size() - 1; i >= 0; i--) {
+                // if (input.contains(".txt")) {
+                //     if (values.get(i).substring(0, 4).equals("blob")) {
+                //         if (values.contains(input)) {
+                //             values.remove(i);
+                //             break;
+                //         }
+                //     }
+                // } else {
+                //     if (values.get(i).substring(0, 4).equals("tree")) {
+                //         if (values.contains(input)) {
+                //             values.remove(i);
+                //             break;
+                //         }
+                //     }
+                // }
+                if (values.get(i).contains(input))
+                {
+                    values.remove(i);
                 }
             }
         } catch (Exception e) {
@@ -88,6 +92,22 @@ public class Tree {
             return hashcode;
         } catch (Exception e) {
             throw e;
+        }
+    }
+
+    public void addDirectory (String path) throws Exception
+    {
+        File dir = new File (path);
+        if (!dir.isDirectory())
+        {
+            throw new Exception ("Could not find the directory path");
+        }
+
+        File[] fileList = dir.listFiles();  //list of all the files
+
+        for (File f : fileList) //loop through each file and add tree
+        {
+            this.add("./" + path + "/" + f.getName());
         }
     }
 
