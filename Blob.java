@@ -11,8 +11,6 @@ public class Blob {
 
     public Blob (String path) throws Exception
     {
-        try
-        {
             file = path; 
 
             //make the objects folder if it doesn't already exist
@@ -30,18 +28,13 @@ public class Blob {
             br.close();
 
             //then hash it and make the file=
-            hashcode = getHashFromString(sb.toString());
+            hashcode = Utils.getHashFromString(sb.toString());
             File newFile = new File ("./objects/" + hashcode);
             newFile.createNewFile();
 
             PrintWriter pw = new PrintWriter(new BufferedWriter( new FileWriter ("./objects/" + hashcode)));
             pw.print(sb.toString());
             pw.close();
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
     }
 
     public String getHashcode ()
@@ -49,33 +42,9 @@ public class Blob {
         return hashcode;
     }
 
-    //luke i made it public static
-        //luke i made it public static
-            //luke i made it public static
-                //luke i made it public static
-                    //luke i made it public static
-                        //luke i made it public static
-                            //luke i made it public static
-    public static String getHashFromString (String input) throws Exception
+    public String getFile () 
     {
-        try
-        {
-            MessageDigest md = MessageDigest.getInstance("SHA1");
-            md.update(input.getBytes());
-            byte[] b = md.digest();
-
-            char hexDigit[] = {'0', '1', '2', '3', '4', '5', '6', '7',
-            '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-            StringBuffer buf = new StringBuffer();
-            for (int j=0; j<b.length; j++) {
-            buf.append(hexDigit[(b[j] >> 4) & 0x0f]);
-            buf.append(hexDigit[b[j] & 0x0f]);
-            }
-            return buf.toString();
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
+        return file; 
     }
+    
 }

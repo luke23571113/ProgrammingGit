@@ -157,5 +157,5 @@ public class TreeTester {
 
         assertTrue ("tree does not contain files from first folder", contents.contains("./folder/examplefile1.txt"));
         assertTrue ("tree does not contain files from the sub directories", contents.contains ("tree : 06275a0db4c2fea08154ec7aeca605ca861c535f : ./folder/test3"));
-    }
+    } 
 }

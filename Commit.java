@@ -56,7 +56,7 @@ public class Commit {
 
         //whatup luke
         StringBuilder stringBuilder = new StringBuilder(tree + "\n" + lastCommit + "\n" + author + "\n" + date + "\n" + summary);
-        String hash = Blob.getHashFromString(stringBuilder.toString());
+        String hash = Utils.getHashFromString(stringBuilder.toString());
         stringBuilder.insert(stringBuilder.indexOf("\n", stringBuilder.indexOf("\n") + 1), nextCommit + "\n");
 
         File file = new File("objects/" + hash);
@@ -72,6 +72,6 @@ public class Commit {
 
     public String generateSha() throws Exception {
         String fileContents = tree + "\n" + lastCommit + "\n" + nextCommit + "\n" + author + "\n" + date + "\n" + summary;
-        return Blob.getHashFromString(fileContents);
+        return Utils.getHashFromString(fileContents);
     }
 }

@@ -3,86 +3,72 @@ import java.util.*;
 import java.io.*; 
 
 public class Index {
-    
-    private HashMap<String, String> hashCodes;
+    private ArrayList<String> entries;
 
     public Index ()
     {
-        hashCodes = new HashMap<String, String>();
+        entries = new ArrayList<String>(); 
     }    
 
     public void init () throws Exception
     {
-        try
-        {
-            File objects = new File ("./objects");
-            objects.mkdirs();
-            File index = new File("./index");
-            index.createNewFile();
+        File objects = new File ("./objects");
+        objects.mkdirs();
+        File index = new File("./index");
+        index.createNewFile();
 
-            //will create an index file
-            updateIndex();
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
+        //will create an index file
+        updateIndex();
     }
 
-    public void add (String file) throws Exception
+    public void add (Tree tree) throws Exception
     {
-        try
-        {
-            Blob blob = new Blob(file);
+        String hashcode = tree.getHashcode(); 
+        String folderName = tree.getDiretoryPath();
+        entries.add("tree : " + hashcode + " : " + folderName);
+        updateIndex();
+    }
 
-            hashCodes.put(file, blob.getHashcode());
-            updateIndex();
-        }
-        catch (Exception e)
-        {
-            throw e; 
-        }
+    public void add (Blob b ) throws Exception
+    {
+        String hashCode = b.getHashcode();
+        String fileName = b.getFile();
+        entries.add("blob : " + hashCode + " : " + fileName);
     }
 
     public void remove (String file) throws Exception
     {
-        try
+        //remove from entries
+        boolean contains = false; 
+        for (int i = entries.size() - 1; i >= 0; i--)
         {
-            //first check if the file is even added
-            if (!hashCodes.containsKey(file)) throw new Exception ("Error: File not found");
-
-            //remove it from the hashmap
-            hashCodes.remove(file);
-            updateIndex(); //update the index file
-
-            //nb: do not delete the file from objects
+            if (entries.get(i).contains(file)) 
+            {
+                entries.remove(i);
+            }
         }
-        catch (Exception e)
+
+        //check if it exists
+        if (!contains)
         {
-            throw e;
+            throw new Exception ("File does not exist in index");
         }
+
+        //update the actual file
+        updateIndex(); 
     }
 
     //method that will fill index with all the entries in hashCodes
     private void updateIndex () throws Exception
     {
-        try
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < entries.size(); i++)
         {
-            StringBuilder sb = new StringBuilder();
-            File indexFile = new File("./index");
-            for (Map.Entry<String,String> mapElement : hashCodes.entrySet()) {
-                String key = mapElement.getKey();
-                String lock = mapElement.getValue();
-                sb.append(key + " : " + lock + "\n");
-            }
-            FileWriter writer = new FileWriter(indexFile);
-            writer.write(sb.toString());
-            writer.flush();
-            writer.close();
+            if (i == entries.size() - 1) sb.append(entries.get(i) + "\n");
+            else sb.append (entries.get(i));
         }
-        catch (Exception e)
-        {
-            throw e;
-        }
+
+        Utils.writeToFile(sb.toString(), "./index");
     }
 }
