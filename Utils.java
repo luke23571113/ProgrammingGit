@@ -41,9 +41,13 @@ public class Utils {
         }
     }
 
-    public static void writeToFile (String fileContent, String fileName)
+    public static void writeToFile (String fileContent, String fileName) throws Exception 
     {
         File f = new File (fileName);
         f.createNewFile(); //does this work
+
+        FileWriter fw = new FileWriter(fileName);
+        fw.write(fileContent);
+        fw.close(); 
     }
 }
