@@ -155,20 +155,6 @@ public class CommitTester {
         assertTrue("Incorrect hash for the commit's tree", c2.tree.equals("41a9671abc9f3077ac74b639bd9763162e65093d"));
         assertTrue("Incorrect hash for the commit's tree", c3.tree.equals("5551ef27b0dbc9aa8ae5d61745c099a86d1a6a26"));
 
-        // assertTrue("Incorrect hash for the previous commit", c1.lastCommit.equals(""));
-        // assertTrue("Incorrect hash for the next commit", c1.nextCommit.equals(""));
-        
-        // assertTrue("Incorrect hash for the previous commit", c2.lastCommit.equals(c1.getHashcode()));
-        // assertTrue("Incorrect hash for the next commit", c2.nextCommit.equals(""));
-        // String previousTreeContent = Utils.readFromFile("./objects/" + Commit.getTreeFromCommit(c2.lastCommit));
-        // assertTrue("Incorrect tree from the previous commit", previousTreeContent.equals("blob : aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d : file1.txt\n" + 
-        //         "blob : 0ddba0220bdc9080936eae223fcc7b72345af008 : file2.txt"));
-
-        // assertTrue("Incorrect hash for the commit's tree", c3.tree.equals("5551ef27b0dbc9aa8ae5d61745c099a86d1a6a26"));
-        // assertTrue("Incorrect hash for the previous commit", c3.lastCommit.equals(c2.getHashcode()));
-        // String s1 = c2.nextCommit; 
-        // assertTrue("Incorrect hash for commit2's next commit", c2.nextCommit.equals(c3.getHashcode()));
-
         //test prev Commit & its tree
         ArrayList<String> c3Content = Utils.readFromFileToArrayList("./objects/" + c3.getHashcode());
 
