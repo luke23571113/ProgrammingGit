@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.*; 
 
 public class Commit {
 
@@ -25,7 +26,7 @@ public class Commit {
         this.lastCommit = lastCommit;
         this.nextCommit = "";
 
-        tree = createTree();
+        createTree();
         this.date = getDate();
 
     }
@@ -36,14 +37,28 @@ public class Commit {
         this.author = author;
         this.nextCommit = "";
 
-        tree = createTree();
+        createTree();
         this.date = getDate();
 
     }
 
-    public static String createTree() throws Exception {
-        Tree tree = new Tree();
-        return tree.save();
+    //this now needs to just read everything from Index
+    private void createTree () throws Exception
+    {
+        ArrayList<String> indexContents = Utils.readFromFileToArrayList("./index");
+
+        Tree currentIndexTree = new Tree();
+
+        for (String s : indexContents)
+        {
+            String type = Utils.getFirstWordOfString(s);
+            if (type.equals("blob")) currentIndexTree.add(s);
+            else currentIndexTree.addDirectory( Utils.getLastWordOfString(s) ); //are we meant to use addDirectory or just add here?
+        }
+
+        currentIndexTree.add("tree : " + lastCommit);
+        currentIndexTree.save(); 
+        tree = currentIndexTree.getHashcode(); 
     }
 
     public String getDate() {
@@ -54,7 +69,6 @@ public class Commit {
 
     public String writeToObjects() throws Exception {
 
-        //whatup luke
         StringBuilder stringBuilder = new StringBuilder(tree + "\n" + lastCommit + "\n" + author + "\n" + date + "\n" + summary);
         String hash = Utils.getHashFromString(stringBuilder.toString());
         stringBuilder.insert(stringBuilder.indexOf("\n", stringBuilder.indexOf("\n") + 1), nextCommit + "\n");
