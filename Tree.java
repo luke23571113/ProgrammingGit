@@ -12,52 +12,34 @@ public class Tree {
         values = new ArrayList<>();
     }
 
-    public void add(String input) {
-        try {
-            if (!(values.contains(input))) {
-                values.add(input);
-            }
-        } catch (Exception e) {
-            throw e;
+    public void add(String fullLine) throws Exception {
+        if (!(values.contains(fullLine))) {
+            values.add(fullLine);
         }
     }
 
-    public void remove(String input) {
-        try {
-            for (int i = values.size() - 1; i >= 0; i--) {
-                if (values.get(i).contains(input))
-                {
-                    values.remove(i);
-                }
+    public void remove(String input) throws Exception {
+        for (int i = values.size() - 1; i >= 0; i--) {
+            if (values.get(i).contains(input))
+            {
+                values.remove(i);
             }
-        } catch (Exception e) {
-            throw e;
         }
     }
 
-    public String save() throws Exception {
+    public void save() throws Exception {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < values.size(); i++) {
-            if (i < values.size() - 1) {
-                sb.append(values.get(i) + "\n");
-            } else {
-                sb.append(values.get(i));
-            }
+            sb.append(values.get(i));
         }
+        if (values.size() > 0) sb.deleteCharAt(sb.length() - 1);
 
         //hash file contents 
         hashcode = Utils.getHashFromString(sb.toString());
 
-        //safe to file
-        File newFile = new File("./objects/" + hashcode);
-        newFile.createNewFile();
-        FileWriter writer = new FileWriter(newFile);
-        writer.write(sb.toString());
-        writer.flush();
-        writer.close();
-
-        return hashcode;
+        // write contents to a file
+        Utils.writeToFile("./objects/" + hashcode, sb.toString());
     }
 
     public void addDirectory (String directory) throws Exception
@@ -86,9 +68,9 @@ public class Tree {
                 Tree subTree = new Tree();
                 String tempPath = f.getPath();
                 subTree.addDirectory(tempPath);
-                String hash = subTree.save();
+                subTree.save();
 
-                add("tree : " + hash + " : " + tempPath);
+                add("tree : " + hashcode + " : " + tempPath);
             }
         }
     }
