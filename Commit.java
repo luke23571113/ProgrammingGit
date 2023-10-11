@@ -13,8 +13,8 @@ public class Commit {
     String summary;
     String author;
     String date;
-    String lastCommit;
-    String nextCommit;
+    String lastCommit = "";
+    String nextCommit = "";
     String tree;
 
     DateTimeFormatter dateTimeFormatter;
@@ -37,6 +37,7 @@ public class Commit {
 
         this.summary = summary;
         this.author = author;
+        this.lastCommit = "";
         this.nextCommit = "";
 
         createTree();
@@ -59,16 +60,19 @@ public class Commit {
         }
         Index.resetIndexFile(); 
 
-        currentIndexTree.add("tree : " + lastCommit);
+        if (!lastCommit.equals(""))
+        {
+            currentIndexTree.add("tree : " + getTreeFromPrevCommit(lastCommit));
+        }
         currentIndexTree.save(); 
         tree = currentIndexTree.getHashcode(); 
         return currentIndexTree.getHashcode();
     }
 
-    public static String getTreeFromCommit (String commit) throws Exception
+    public static String getTreeFromPrevCommit (String commit) throws Exception
     {
         File f = new File ("./objects/" + commit);
-        if (!f.exists()) throw new Exception ("Commit not found"); 
+        if (commit == "" || !f.exists()) return ""; 
 
         ArrayList<String> commitContents = Utils.readFromFileToArrayList("./objects/" + commit);
 
