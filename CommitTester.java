@@ -25,15 +25,27 @@ public class CommitTester {
     @BeforeAll
     static void setup() throws Exception {
 
-        File objects = new File("./objects");
-        if (!objects.exists()) {
-            objects.mkdir();
-        }
+        File dir = new File("./objects");
+        dir.mkdir();
+
+        dir = new File ("./folder1");
+        dir.mkdirs(); 
+        dir = new File ("./folder2");
+        dir.mkdirs(); 
 
         File index = new File("./index");
-        if (!index.exists()) {
-            index.createNewFile();
-        }
+        index.createNewFile();
+
+        Utils.writeToFile("hello", "./file1.txt"); 
+        Utils.writeToFile("i love git", "./file2.txt");
+        Utils.writeToFile("i hate git", "./file3.txt");
+        Utils.writeToFile("coding is so fun", "./file4.txt");
+
+        Utils.writeToFile("blue", "./folder1/file5.txt");
+        Utils.writeToFile("red", "./folder1/file6.txt");
+
+        Utils.writeToFile("purple", "./folder2file7.txt");
+        Utils.writeToFile("turtle", "./folder2/file8.txt");
     }
 
     @AfterAll
@@ -58,7 +70,7 @@ public class CommitTester {
     @DisplayName("Test create tree")
     void testCreateTree() throws Exception {
 
-        Commit commit = new Commit("summary", "ryan", "lastcommit");
+        Commit commit = new Commit("summary", "ryan");
         String treeSha = commit.createTree();
 
         assertEquals("wrong sha created for tree", "da39a3ee5e6b4b0d3255bfef95601890afd80709", treeSha);
@@ -75,6 +87,20 @@ public class CommitTester {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         assertEquals("commit class generating date wrong", commit.getDate(),
                 simpleDateFormat.format(calendar.getTime()));
+    }
+
+    @Test
+    void testOneCommit() throws Exception {
+        Index i1 = new Index();
+        i1.init(); 
+        i1.add("file1.txt");
+        i1.add("file2.txt");
+
+        Commit c1 = new Commit ("summary", "luke");
+
+        assertTrue("Incorrect hash for the commit's tree", c1.tree.equals("f21c3d366bbb5153c4dd35b30ed8ba28bf746817"));
+        assertTrue("Incorrect hash for the previous commit", c1.lastCommit.equals(""));
+        assertTrue("Incorrect hash for the next commit", c1.nextCommit.equals(""));
     }
 
     // @Test

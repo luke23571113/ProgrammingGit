@@ -74,16 +74,8 @@ public class Index {
     //method that will fill index with all the entries in hashCodes
     private void updateIndex () throws Exception
     {
-        StringBuilder sb = new StringBuilder();
+        String s = Utils.arrayListToFileText(entries);
 
-        for (int i = 0; i < entries.size(); i++)
-        {
-            sb.append(entries.get(i) + "\n");
-        }
-
-        if (sb.length() >= 1) sb.deleteCharAt(sb.length() - 1);
-        String s = sb.toString(); 
-
-        Utils.writeToFile(sb.toString(), "./index");
+        Utils.writeToFile(s.toString(), "./index");
     }
 }

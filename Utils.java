@@ -87,4 +87,10 @@ public class Utils {
         fileContents.add(newContent);
         writeToFile(arrayListToFileText(fileContents), file);
     }
+
+    public static String readLineFromFile (String fileName, int line) throws Exception 
+    {
+        ArrayList<String> content = readFromFileToArrayList(fileName);
+        return content.get(line);
+    }
 }

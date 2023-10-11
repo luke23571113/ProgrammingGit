@@ -31,6 +31,7 @@ public class Commit {
         createTree();
         this.date = getDate();
         hashcode = ""; 
+        writeToObjects();
     }
 
     public Commit(String summary, String author) throws Exception {
@@ -43,6 +44,7 @@ public class Commit {
         createTree();
         this.date = getDate();
         hashcode = ""; 
+        writeToObjects();
     }
 
     //this now needs to just read everything from Index
@@ -101,7 +103,7 @@ public class Commit {
 
         //UPDATE THE LAST COMMIT TO INCLUDE THIS COMMIT
         
-        Utils.replaceLineInFile( "./objects/" + lastCommit, 2, hashcode);
+        if (!lastCommit.equals(""))Utils.replaceLineInFile( "./objects/" + lastCommit, 2, hashcode);
     }
 
     public String getHashcode ()
