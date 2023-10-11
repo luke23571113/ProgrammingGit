@@ -83,8 +83,8 @@ public class Utils {
 
     public static String arrayListToFileText (ArrayList<String> lines) throws Exception
     {
-        StringBuilder sb = new StringBuilder():
-        for (String s : lines) sb.append(s);
+        StringBuilder sb = new StringBuilder();
+        for (String s : lines) sb.append(s + "\n");
         if (lines.size() > 0) sb.deleteCharAt(sb.length() - 1);
 
         return sb.toString(); 

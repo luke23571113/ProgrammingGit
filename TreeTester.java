@@ -88,7 +88,7 @@ public class TreeTester {
     void testSave() throws Exception {
         Tree tree = new Tree();
 
-        tree.values.add("lol");
+        tree.add("lol");
 
         tree.save();
 

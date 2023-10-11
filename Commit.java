@@ -19,6 +19,8 @@ public class Commit {
 
     DateTimeFormatter dateTimeFormatter;
 
+    private String hashcode; 
+
     public Commit(String summary, String author, String lastCommit) throws Exception {
 
         this.summary = summary;
@@ -28,7 +30,7 @@ public class Commit {
 
         createTree();
         this.date = getDate();
-
+        hashcode = ""; 
     }
 
     public Commit(String summary, String author) throws Exception {
@@ -39,11 +41,11 @@ public class Commit {
 
         createTree();
         this.date = getDate();
-
+        hashcode = ""; 
     }
 
     //this now needs to just read everything from Index
-    private void createTree () throws Exception
+    public String createTree () throws Exception
     {
         ArrayList<String> indexContents = Utils.readFromFileToArrayList("./index");
 
@@ -55,10 +57,28 @@ public class Commit {
             if (type.equals("blob")) currentIndexTree.add(s);
             else currentIndexTree.addDirectory( Utils.getLastWordOfString(s) ); //are we meant to use addDirectory or just add here?
         }
+        Index.resetIndexFile(); 
 
         currentIndexTree.add("tree : " + lastCommit);
         currentIndexTree.save(); 
         tree = currentIndexTree.getHashcode(); 
+        return currentIndexTree.getHashcode();
+    }
+
+    public static String getTreeFromCommit (String commit) throws Exception
+    {
+        File f = new File ("./objects/" + commit);
+        if (!f.exists()) throw new Exception ("Commit not found"); 
+
+        ArrayList<String> commitContents = Utils.readFromFileToArrayList("./objects/" + commit);
+
+        if (commitContents.get(1).equals(""))
+        {
+            throw new Exception ("Commit doesn't have a previous commit");
+        }
+
+        ArrayList<String> pastCommitContents = Utils.readFromFileToArrayList(commitContents.get(1));
+        return pastCommitContents.get(0);
     }
 
     public String getDate() {
@@ -67,25 +87,21 @@ public class Commit {
         return simpleDateFormat.format(calendar.getTime());
     }
 
-    public String writeToObjects() throws Exception {
+    public void writeToObjects() throws Exception {
 
         StringBuilder stringBuilder = new StringBuilder(tree + "\n" + lastCommit + "\n" + author + "\n" + date + "\n" + summary);
-        String hash = Utils.getHashFromString(stringBuilder.toString());
+        hashcode = Utils.getHashFromString(stringBuilder.toString());
         stringBuilder.insert(stringBuilder.indexOf("\n", stringBuilder.indexOf("\n") + 1), nextCommit + "\n");
 
-        File file = new File("objects/" + hash);
-        if (!file.exists())
-            file.createNewFile();
+        Utils.writeToFile (stringBuilder.toString(), "./objects/" + hashcode);
 
-        FileWriter fileWriter = new FileWriter("objects/" + hash, false);
-        fileWriter.write(stringBuilder.toString());
-        fileWriter.close();
-
-        return hash; 
+        //UPDATE THE LAST COMMIT TO INCLUDE THIS COMMIT
+        
+        Utils.replaceLineInFile( "./objects/" + lastCommit, 2, hashcode);
     }
 
-    public String generateSha() throws Exception {
-        String fileContents = tree + "\n" + lastCommit + "\n" + nextCommit + "\n" + author + "\n" + date + "\n" + summary;
-        return Utils.getHashFromString(fileContents);
+    public String getHashcode ()
+    {
+        return hashcode; 
     }
 }

@@ -27,16 +27,9 @@ public class IndexTester {
          * Utils.deleteDirectory("objects");
          */
 
-        file1 = new File("./file1.txt");
-        file2 = new File("./file2.txt");
-        FileWriter writer = new FileWriter(file1);
-        writer.write("lol\nlollol");
-        writer.flush();
-        writer.close();
-        FileWriter writer2 = new FileWriter(file2);
-        writer2.write("lol\nlollol\nlol");
-        writer2.flush();
-        writer2.close();
+        Utils.writeToFile("lol\nlollol","./file1.txt");
+        Utils.writeToFile("lol\nlollol\nlol","./file2.txt");
+
         index = new Index();
         index.init();
     }
@@ -73,24 +66,19 @@ public class IndexTester {
         // TestHelper.runTestSuiteMethods("testInitialize");
 
         index.add("file1.txt");
-        index.add("file1.txt");
+        index.add("file2.txt");
 
         // check if the file exists
         File file = new File("./objects/f3ff62c55a22ff8a20567318e316ef9da8b01b98");
 
         assertTrue("File with hash name is in objects", file.exists());
 
-        File indexFile = new File("index");
+        //index is empty for some reason 
+        String indexContent = Utils.readFromFile("./index");
 
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = new BufferedReader(new FileReader(indexFile));
+        String firstLine = indexContent.substring(0, indexContent.indexOf("\n"));
 
-        while (br.ready()) {
-            sb.append ((char) br.read());
-        }
-        br.close();
-
-        assertTrue("Index was properly updated", sb.toString().equals("file1.txt : f3ff62c55a22ff8a20567318e316ef9da8b01b98\n"));
+        assertTrue("Index was not properly updated", firstLine.equals("blob : f3ff62c55a22ff8a20567318e316ef9da8b01b98 : file1.txt"));
     }
 
     @Test
@@ -104,20 +92,8 @@ public class IndexTester {
         index.add("file2.txt");
         index.remove("file2.txt");
 
-        // check if the file exists
-        File fileT1 = new File("./objects/f3ff62c55a22ff8a20567318e316ef9da8b01b98");
-        File fileT2 = new File("./objects/9c33b7f16cdaee196a2079256ccf381b09b69c7a");
+        String indexContents = Utils.readFromFile("./index");
 
-        File indexFile = new File("./index");
-
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = new BufferedReader(new FileReader(indexFile));
-
-        while (br.ready()) {
-            sb.append ((char) br.read());
-        }
-        br.close();
-
-        assertTrue("Index was updated properly", sb.toString().equals("file1.txt : f3ff62c55a22ff8a20567318e316ef9da8b01b98\n"));
+        assertTrue("Index was not updated properly", indexContents.equals("blob : f3ff62c55a22ff8a20567318e316ef9da8b01b98 : file1.txt"));
     }
 }

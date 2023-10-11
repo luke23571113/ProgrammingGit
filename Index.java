@@ -21,19 +21,26 @@ public class Index {
         updateIndex();
     }
 
-    public void add (Tree tree) throws Exception
+    public void add (String fileName) throws Exception
     {
-        String hashcode = tree.getHashcode(); 
-        String folderName = tree.getDiretoryPath();
-        entries.add("tree : " + hashcode + " : " + folderName);
+        Blob b = new Blob(fileName);
+
+        String entry = "blob : " + b.getHashcode() + " : " + fileName;
+
+        if (!entries.contains(entry)) entries.add(entry);
+
         updateIndex();
     }
 
-    public void add (Blob b ) throws Exception
+    public void addDirectory (String folderName) throws Exception
     {
-        String hashCode = b.getHashcode();
-        String fileName = b.getFile();
-        entries.add("blob : " + hashCode + " : " + fileName);
+        Tree t = new Tree ();
+        t.add(folderName);
+        t.save(); 
+
+        String entry = "tree : " + t.getHashcode() + " : " + folderName;
+
+        if (!entries.contains(entry)) entries.add(entry);
     }
 
     public void remove (String file) throws Exception
@@ -45,6 +52,7 @@ public class Index {
             if (entries.get(i).contains(file)) 
             {
                 entries.remove(i);
+                contains = true; 
             }
         }
 
@@ -58,6 +66,11 @@ public class Index {
         updateIndex(); 
     }
 
+    public static void resetIndexFile () throws Exception
+    {
+        Utils.writeToFile("", "./index");
+    }
+
     //method that will fill index with all the entries in hashCodes
     private void updateIndex () throws Exception
     {
@@ -65,9 +78,11 @@ public class Index {
 
         for (int i = 0; i < entries.size(); i++)
         {
-            if (i == entries.size() - 1) sb.append(entries.get(i) + "\n");
-            else sb.append (entries.get(i));
+            sb.append(entries.get(i) + "\n");
         }
+
+        if (sb.length() >= 1) sb.deleteCharAt(sb.length() - 1);
+        String s = sb.toString(); 
 
         Utils.writeToFile(sb.toString(), "./index");
     }
