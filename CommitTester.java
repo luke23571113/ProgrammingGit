@@ -103,6 +103,31 @@ public class CommitTester {
         assertTrue("Incorrect hash for the next commit", c1.nextCommit.equals(""));
     }
 
+    @Test
+    void testTwoCommits() throws Exception
+    {
+        Index i1 = new Index();
+        i1.init();
+        i1.add("file1.txt");
+        i1.add("file2.txt");
+        Commit c1 = new Commit ("commit one", "luke");
+
+        i1.init();
+        i1.addDirectory("./folder1");
+        Commit c2 = new Commit("commit two", "ryan", c1.getHashcode()); 
+
+        assertTrue("Incorrect hash for the commit's tree", c1.tree.equals("f21c3d366bbb5153c4dd35b30ed8ba28bf746817"));
+        assertTrue("Incorrect hash for the previous commit", c1.lastCommit.equals(""));
+        assertTrue("Incorrect hash for the next commit", c1.nextCommit.equals(""));
+
+        String s = Utils.readFromFile("./objects/" + c2.tree);
+        
+        assertTrue("Incorrect hash for the commit's tree", c2.tree.equals("41a9671abc9f3077ac74b639bd9763162e65093d"));
+        assertTrue("Incorrect hash for the previous commit", c2.lastCommit.equals(c1.getHashcode()));
+        assertTrue("Incorrect hash for the next commit", c2.nextCommit.equals(""));
+
+    }
+
     // @Test
     // @DisplayName("Test that write to objects works, which means that generate sha works")
     // void testWriteToObjects() throws Exception {

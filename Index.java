@@ -3,7 +3,7 @@ import java.util.*;
 import java.io.*; 
 
 public class Index {
-    private ArrayList<String> entries;
+    private static ArrayList<String> entries;
 
     public Index ()
     {
@@ -18,6 +18,7 @@ public class Index {
         index.createNewFile();
 
         //will create an index file
+        entries = new ArrayList<String>();
         updateIndex();
     }
 
@@ -35,12 +36,13 @@ public class Index {
     public void addDirectory (String folderName) throws Exception
     {
         Tree t = new Tree ();
-        t.add(folderName);
+        t.addDirectory(folderName);
         t.save(); 
 
         String entry = "tree : " + t.getHashcode() + " : " + folderName;
 
         if (!entries.contains(entry)) entries.add(entry);
+        updateIndex(); 
     }
 
     public void remove (String file) throws Exception
@@ -69,6 +71,7 @@ public class Index {
     public static void resetIndexFile () throws Exception
     {
         Utils.writeToFile("", "./index");
+        entries = new ArrayList<String>(); 
     }
 
     //method that will fill index with all the entries in hashCodes

@@ -60,31 +60,27 @@ public class Commit {
             if (type.equals("blob")) currentIndexTree.add(s);
             else currentIndexTree.addDirectory( Utils.getLastWordOfString(s) ); //are we meant to use addDirectory or just add here?
         }
-        Index.resetIndexFile(); 
+
+        if (!Utils.readFromFile("./index").equals(""))
+        {
+            System.out.println();
+        }
 
         if (!lastCommit.equals(""))
         {
-            currentIndexTree.add("tree : " + getTreeFromPrevCommit(lastCommit));
+            currentIndexTree.add("tree : " + getTreeFromCommit(lastCommit));
         }
         currentIndexTree.save(); 
         tree = currentIndexTree.getHashcode(); 
         return currentIndexTree.getHashcode();
     }
 
-    public static String getTreeFromPrevCommit (String commit) throws Exception
+    public static String getTreeFromCommit (String curCommit) throws Exception
     {
-        File f = new File ("./objects/" + commit);
-        if (commit == "" || !f.exists()) return ""; 
+        File f = new File ("./objects/" + curCommit);
+        if (curCommit == "" || !f.exists()) throw new Exception ("commit doesn't exist");
 
-        ArrayList<String> commitContents = Utils.readFromFileToArrayList("./objects/" + commit);
-
-        if (commitContents.get(1).equals(""))
-        {
-            throw new Exception ("Commit doesn't have a previous commit");
-        }
-
-        ArrayList<String> pastCommitContents = Utils.readFromFileToArrayList(commitContents.get(1));
-        return pastCommitContents.get(0);
+        return Utils.readLineFromFile("./objects/" + curCommit, 0);
     }
 
     public String getDate() {
