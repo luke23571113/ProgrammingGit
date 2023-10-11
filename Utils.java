@@ -50,4 +50,34 @@ public class Utils {
         fw.write(fileContent);
         fw.close(); 
     }
+
+    public static ArrayList<String> readFromFileToArrayList (String fileName) throws Exception
+    {
+        ArrayList<String> list = new ArrayList<String>();
+
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+
+        while (br.ready()) 
+        {
+            list.add(br.readLine());
+        }
+
+        br.close(); 
+        return list; 
+    }
+
+    public static String getFirstWordOfString (String s)
+    {
+        return s.substring(0, s.indexOf(" "));
+    }
+
+    public static String getLastWordOfString (String s)
+    {
+        if (s == null || s .isEmpty()) {
+            return "";
+        }
+
+        String[] words = s.trim().split("\\s+");
+        return words[words.length - 1];
+    }
 }
