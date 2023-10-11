@@ -80,4 +80,21 @@ public class Utils {
         String[] words = s.trim().split("\\s+");
         return words[words.length - 1];
     }
+
+    public static String arrayListToFileText (ArrayList<String> lines) throws Exception
+    {
+        StringBuilder sb = new StringBuilder():
+        for (String s : lines) sb.append(s);
+        if (lines.size() > 0) sb.deleteCharAt(sb.length() - 1);
+
+        return sb.toString(); 
+    }
+
+    public static void replaceLineInFile (String file, int line, String newContent) throws Exception
+    {
+        ArrayList<String> fileContents = Utils.readFromFileToArrayList(file);
+        fileContents.remove(line);
+        fileContents.add(newContent);
+        writeToFile(arrayListToFileText(fileContents), file);
+    }
 }
