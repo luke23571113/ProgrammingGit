@@ -99,7 +99,10 @@ public class Commit {
 
         //UPDATE THE LAST COMMIT TO INCLUDE THIS COMMIT
         
-        if (!lastCommit.equals(""))Utils.replaceLineInFile( "./objects/" + lastCommit, 2, hashcode);
+        if (!lastCommit.equals(""))
+        {
+            Utils.replaceLineInFile( "./objects/" + lastCommit, 2, hashcode);
+        }
     }
 
     public String getHashcode ()

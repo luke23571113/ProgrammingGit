@@ -84,7 +84,7 @@ public class Utils {
     {
         ArrayList<String> fileContents = Utils.readFromFileToArrayList(file);
         fileContents.remove(line);
-        fileContents.add(newContent);
+        fileContents.add(line, newContent);
         writeToFile(arrayListToFileText(fileContents), file);
     }
 

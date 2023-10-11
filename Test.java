@@ -39,5 +39,7 @@ public class Test {
         i1.add("folder1/file5.txt");
         i1.add("folder1/file6.txt");
         Commit c2 = new Commit("commit two", "ryan", c1.getHashcode()); 
+        
+        ArrayList<String> c1List = Utils.readFromFileToArrayList("./objects/" + c1.getHashcode());
     }
 }
