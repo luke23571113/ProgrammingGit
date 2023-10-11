@@ -81,19 +81,19 @@ public class IndexTester {
         assertTrue("Index was not properly updated", firstLine.equals("blob : f3ff62c55a22ff8a20567318e316ef9da8b01b98 : file1.txt"));
     }
 
-    @Test
-    @DisplayName("[8] Test if initialize and objects are created correctly")
-    void testRemoveIndex() throws Exception {
+    // @Test
+    // @DisplayName("[8] Test if initialize and objects are created correctly")
+    // void testRemoveIndex() throws Exception {
 
-        // Run the person's code
-        // TestHelper.runTestSuiteMethods("testInitialize");
+    //     // Run the person's code
+    //     // TestHelper.runTestSuiteMethods("testInitialize");
 
-        index.add("file1.txt");
-        index.add("file2.txt");
-        index.remove("file2.txt");
+    //     index.add("file1.txt");
+    //     index.add("file2.txt");
+    //     index.remove("file2.txt");
 
-        String indexContents = Utils.readFromFile("./index");
+    //     String indexContents = Utils.readFromFile("./index");
 
-        assertTrue("Index was not updated properly", indexContents.equals("blob : f3ff62c55a22ff8a20567318e316ef9da8b01b98 : file1.txt"));
-    }
+    //     assertTrue("Index was not updated properly", indexContents.equals("blob : f3ff62c55a22ff8a20567318e316ef9da8b01b98 : file1.txt"));
+    // }
 }

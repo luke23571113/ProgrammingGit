@@ -45,6 +45,22 @@ public class Index {
         updateIndex(); 
     }
 
+    public void delete (String fileName) throws Exception
+    {
+        String entry = "*deleted* " + fileName;
+        if (!entries.contains(entry)) entries.add(entry);
+        updateIndex(); 
+    }
+
+    public void edit (String fileName) throws Exception
+    {
+        String entry = "*edited* " + fileName;
+        if (!entries.contains(entry)) entries.add(entry);
+        updateIndex(); 
+    }
+
+
+    /* 
     public void remove (String file) throws Exception
     {
         //remove from entries
@@ -67,6 +83,7 @@ public class Index {
         //update the actual file
         updateIndex(); 
     }
+    */
 
     public static void resetIndexFile () throws Exception
     {
