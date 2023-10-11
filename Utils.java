@@ -1,5 +1,6 @@
 import java.io.*;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*; 
 
 public class Utils {
@@ -20,25 +21,14 @@ public class Utils {
 
     public static String getHashFromString (String input) throws Exception 
     {
-        try
-        {
-            MessageDigest md = MessageDigest.getInstance("SHA1");
-            md.update(input.getBytes());
-            byte[] b = md.digest();
-
-            char hexDigit[] = {'0', '1', '2', '3', '4', '5', '6', '7',
-            '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-            StringBuffer buf = new StringBuffer();
-            for (int j=0; j<b.length; j++) {
-            buf.append(hexDigit[(b[j] >> 4) & 0x0f]);
-            buf.append(hexDigit[b[j] & 0x0f]);
-            }
-            return buf.toString();
+        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+        byte[] result = mDigest.digest(input.getBytes());
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < result.length; i++) {
+            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
         }
-        catch (Exception e)
-        {
-            throw e;
-        }
+         
+        return sb.toString();
     }
 
     public static void writeToFile (String fileContent, String fileName) throws Exception 

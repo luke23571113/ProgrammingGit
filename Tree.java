@@ -28,18 +28,12 @@ public class Tree {
     }
 
     public void save() throws Exception {
-        StringBuilder sb = new StringBuilder();
+        String treeFileContent = Utils.arrayListToFileText(values);
 
-        for (int i = 0; i < values.size(); i++) {
-            sb.append(values.get(i));
-        }
-        if (values.size() > 0) sb.deleteCharAt(sb.length() - 1);
-
-        //hash file contents 
-        hashcode = Utils.getHashFromString(sb.toString());
+        hashcode = Utils.getHashFromString(treeFileContent); 
 
         // write contents to a file
-        Utils.writeToFile("./objects/" + hashcode, sb.toString());
+        Utils.writeToFile(treeFileContent, "./objects/" + hashcode); 
     }
 
     public void addDirectory (String directory) throws Exception
@@ -70,7 +64,7 @@ public class Tree {
                 subTree.addDirectory(tempPath);
                 subTree.save();
 
-                add("tree : " + hashcode + " : " + tempPath);
+                add("tree : " + subTree.getHashcode() + " : " + tempPath);
             }
         }
     }
