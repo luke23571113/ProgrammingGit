@@ -1,12 +1,10 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.security.MessageDigest;
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
 
 public class Tree {
     private ArrayList<String> values;
     private String hashcode = "";
-    private String directoryPath; 
+    // private String directoryPath; 
 
     public Tree() {
         values = new ArrayList<>();
@@ -38,8 +36,7 @@ public class Tree {
 
     public void addDirectory (String directory) throws Exception
     {
-        directoryPath = directory; 
-        File dir = new File (this.directoryPath);
+        File dir = new File (directory);
         if (!dir.isDirectory())
         {
             throw new Exception ("Invalid directory path");
@@ -51,7 +48,7 @@ public class Tree {
         {
             if (f.isFile ())
             {
-                String filePath = directoryPath + "/" + f.getName();
+                String filePath = directory + "/" + f.getName();
                 Blob b = new Blob (filePath); //are you meant to make the files a blob? ig it can't hurt ...
 
                 add("blob : " + b.getHashcode() + " : " + filePath);
@@ -67,15 +64,12 @@ public class Tree {
                 add("tree : " + subTree.getHashcode() + " : " + tempPath);
             }
         }
+        
+        save(); 
     }
 
     public String getHashcode ()
     {
         return hashcode;
-    }
-
-    public String getDiretoryPath ()
-    {
-        return directoryPath; 
     }
 }
