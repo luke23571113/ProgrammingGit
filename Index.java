@@ -58,32 +58,6 @@ public class Index {
         updateIndex(); 
     }
 
-
-    /* 
-    public void remove (String file) throws Exception
-    {
-        //remove from entries
-        boolean contains = false; 
-        for (int i = entries.size() - 1; i >= 0; i--)
-        {
-            if (entries.get(i).contains(file)) 
-            {
-                entries.remove(i);
-                contains = true; 
-            }
-        }
-
-        //check if it exists
-        if (!contains)
-        {
-            throw new Exception ("File does not exist in index");
-        }
-
-        //update the actual file
-        updateIndex(); 
-    }
-    */
-
     public static void resetIndexFile () throws Exception
     {
         Utils.writeToFile("", "./index");

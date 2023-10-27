@@ -41,10 +41,14 @@ public class Commit {
         this.lastCommit = "";
         this.nextCommit = "";
 
+        //TODO: need to clear index
+        //TODO: there is some weird case that I am failing, where Commit doesn't work when I only add a directory?
+
         createTree();
         this.date = getDate();
         hashcode = ""; 
         writeToObjects();
+
     }
 
     //this now needs to just read everything from Index
