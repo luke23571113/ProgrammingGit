@@ -32,6 +32,7 @@ public class Commit {
         this.date = getDate();
         hashcode = ""; 
         writeToObjects();
+        
     }
 
     public Commit(String summary, String author) throws Exception {
@@ -52,7 +53,7 @@ public class Commit {
     }
 
     //this now needs to just read everything from Index
-    public String createTree () throws Exception
+    private String createTree () throws Exception
     {
         ArrayList<String> indexContents = Utils.readFromFileToArrayList("./index");
 
@@ -62,7 +63,15 @@ public class Commit {
         {
             String type = Utils.getFirstWordOfString(s);
             if (type.equals("blob")) currentIndexTree.add(s);
-            else currentIndexTree.addDirectory( Utils.getLastWordOfString(s) ); //are we meant to use addDirectory or just add here?
+            else if (type.equals("tree"))currentIndexTree.addDirectory( Utils.getLastWordOfString(s) ); //are we meant to use addDirectory or just add here?
+            else if (type.equals("*deleted*")) 
+            {
+                currentIndexTree.
+            }
+            else if (type.equals("*edited*")) 
+            {
+
+            }
         }
 
         if (!Utils.readFromFile("./index").equals(""))

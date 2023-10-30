@@ -16,7 +16,7 @@ public class Tree {
         }
     }
 
-    public void remove(String input) throws Exception {
+    public void remove (String input) throws Exception {
         for (int i = values.size() - 1; i >= 0; i--) {
             if (values.get(i).contains(input))
             {
@@ -67,6 +67,40 @@ public class Tree {
         
         save(); 
     }
+
+    /* STUFF FOR A  */
+
+    public void deletePreviousFile ()
+    {
+        //first if the blobs of the current tree contain anything
+    }
+
+    public void editPreviousFile ()
+    {
+
+    }
+
+    private ArrayList<String> getBlobList ()
+    {
+        ArrayList<String> list = new ArrayList<String>(); 
+        for (String s : values)
+        {
+            if (Utils.getFirstWordOfString(s).equals("blob")) list.add(s);
+        }
+        return list;
+    }
+
+    private ArrayList<String> getTreeList ()
+    {
+        ArrayList<String> list = new ArrayList<String>(); 
+        for (String s : values)
+        {
+            if (Utils.getFirstWordOfString(s).equals("tree")) list.add(s);
+        }
+        return list;
+    }
+
+
 
     public String getHashcode ()
     {
