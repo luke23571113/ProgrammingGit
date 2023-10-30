@@ -93,4 +93,10 @@ public class Utils {
         ArrayList<String> content = readFromFileToArrayList(fileName);
         return content.get(line);
     }
+
+    public static String getSHAofLine (String line) throws Exception
+    {
+        String[] arr = line.split(" : ");
+        return arr[1];
+    }
 }
