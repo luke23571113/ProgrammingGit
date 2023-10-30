@@ -4,8 +4,7 @@ import java.io.*;
 public class Test {
     public static void main (String[] args) throws Exception
     {
-        Tree t = new Tree();
-        t.addDirectory("./folder1");
-        System.out.println(t.getHashcode());
+        String s = "blob : alskjalkjalkjsd : file1.txt";
+        System.out.println(Utils.getSHAofLine(s));
     }
 }

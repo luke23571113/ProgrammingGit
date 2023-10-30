@@ -26,6 +26,17 @@ public class Tree {
     }
 
     public void save() throws Exception {
+        //handle all of the removes first
+        for (int i = values.size() - 1; i >= 0; i--)
+        {
+            String curEntry = values.get(i);
+            String firstWord = Utils.getFirstWordOfString(curEntry);
+            if (firstWord.equals("*deleted*")) deletePreviousFile(Utils.getLastWordOfString(curEntry));
+            else if (firstWord.equals("*edited*")) editPreviousFile(Utils.getLastWordOfString(curEntry));
+            
+
+        }
+        
         String treeFileContent = Utils.arrayListToFileText(values);
 
         hashcode = Utils.getHashFromString(treeFileContent); 
@@ -70,15 +81,50 @@ public class Tree {
 
     /* STUFF FOR A  */
 
-    public void deletePreviousFile ()
+    private void deletePreviousFile (String fileToDelete) throws Exception
     {
-        //first if the blobs of the current tree contain anything
+        //FIXME: upon deletion, hashcode won't be known ... 
+        String treeToSearch = getTreeWhichContainsFile(fileToDelete, hashcode); //so i guess this only works if the tree is saved first?
+
+        ArrayList<String> treeContents = Utils.readFromFileToArrayList("./objects/" + treeToSearch);
+
+        //copy over all the contents except for the file we want to delete
+        for (String s : treeContents)
+        {
+            String fileName = Utils.getLastWordOfString(s);
+            if (!fileName.equals(fileToDelete))
+            {
+                values.add(s);
+            }
+        }
     }
 
-    public void editPreviousFile ()
+    private void editPreviousFile (String fileToEdit)
     {
 
     }
+
+    private String getTreeWhichContainsFile (String fileToGet, String curTree) throws Exception
+    {
+        // base case : current tree contains the file we're looking for
+        ArrayList<String> blobList = getBlobList(); 
+
+        for (String s : blobList)
+        {
+            String fileName = Utils.getLastWordOfString(s);
+            if (fileToGet.equals(fileName)) return curTree;
+        }
+
+        ArrayList<String> treeList = getTreeList();
+        for (String s : treeList)
+        {
+            String treeName = Utils.getSHAofLine(s); 
+            return getTreeWhichContainsFile(fileToGet, treeName);
+        }
+
+        throw new Exception ("could not find a tree that contains the requested file");
+    }
+
 
     private ArrayList<String> getBlobList ()
     {

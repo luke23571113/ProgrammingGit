@@ -64,14 +64,8 @@ public class Commit {
             String type = Utils.getFirstWordOfString(s);
             if (type.equals("blob")) currentIndexTree.add(s);
             else if (type.equals("tree"))currentIndexTree.addDirectory( Utils.getLastWordOfString(s) ); //are we meant to use addDirectory or just add here?
-            else if (type.equals("*deleted*")) 
-            {
-                currentIndexTree.
-            }
-            else if (type.equals("*edited*")) 
-            {
-
-            }
+            else if (type.equals("*deleted*")) currentIndexTree.deletePreviousFile(Utils.getLastWordOfString(s));
+            else if (type.equals("*edited*")) currentIndexTree.deletePreviousFile(Utils.getLastWordOfString(s)); 
         }
 
         if (!Utils.readFromFile("./index").equals(""))
