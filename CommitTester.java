@@ -98,9 +98,12 @@ public class CommitTester {
 
         Commit c1 = new Commit ("summary", "luke");
 
+
         assertTrue("Incorrect hash for the commit's tree", c1.tree.equals("f21c3d366bbb5153c4dd35b30ed8ba28bf746817"));
         assertTrue("Incorrect hash for the previous commit", c1.lastCommit.equals(""));
         assertTrue("Incorrect hash for the next commit", c1.nextCommit.equals(""));
+        // assertTrue ("incorrect hash for the current commit", c1.getHashcode().equals("3d184c8a5835101c10f14afdc72dad65aebc1384")); 
+
     }
 
     @Test
