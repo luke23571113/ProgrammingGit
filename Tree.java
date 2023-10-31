@@ -34,13 +34,16 @@ public class Tree {
         Utils.writeToFile(treeFileContent, "./objects/" + hashcode); 
     }
 
-    public void addDirectory (String directory) throws Exception
+    /* 
+    public String addDirectory (String directory) throws Exception
     {
         File dir = new File (directory);
         if (!dir.isDirectory())
         {
             throw new Exception ("Invalid directory path");
         }
+
+        Tree dirTree = new Tree(); 
 
         File[] fileList = dir.listFiles();  //list of all the files
 
@@ -51,7 +54,7 @@ public class Tree {
                 String filePath = directory + "/" + f.getName();
                 Blob b = new Blob (filePath); //are you meant to make the files a blob? ig it can't hurt ...
 
-                add("blob : " + b.getHashcode() + " : " + filePath);
+                dirTree.add("blob : " + b.getHashcode() + " : " + filePath);
             }
             else if (f.isDirectory())
             { 
@@ -61,11 +64,53 @@ public class Tree {
                 subTree.addDirectory(tempPath);
                 subTree.save();
 
-                add("tree : " + subTree.getHashcode() + " : " + tempPath);
+                dirTree.add("tree : " + subTree.getHashcode() + " : " + tempPath);
             }
         }
         
-        save(); 
+        return di
+    }
+
+    */
+
+    public static String addDirectory (String directory) 
+    {
+        try
+        {
+            File dir = new File (directory);
+
+            if (!dir.exists())
+            {
+                throw new Exception ("directory doesn't exist");
+            }
+
+            Tree dirTree = new Tree(); 
+
+            File[] fileList = dir.listFiles(); 
+
+            for (File f : fileList)
+            {
+                if (f.isFile())
+                {
+                    String filePath = directory + "/" + f.getName(); 
+                    Blob b = new Blob(filePath);
+
+                    dirTree.add("blob : " + b.getHashcode() + " : " + filePath);
+                }
+                else if (f.isDirectory())
+                {
+                    
+                }
+            }
+
+            dirTree.save(); 
+
+            return dirTree.getHashcode();
+        }
+        catch(Exception e)
+        {
+            return "";
+        }
     }
 
     /* STUFF FOR A  */

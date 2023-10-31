@@ -29,6 +29,14 @@ public class TreeTester {
 
         Utils.writeToFile("lol\nlollol", "./file1.txt");
         Utils.writeToFile("lol\nlollol\nlol", "./file2.txt");
+
+        //first create some files that we can use
+        File subDir = new File("./test1");
+        subDir.mkdirs();
+
+        Utils.writeToFile("the sha of this is ... ?", "./test1/examplefile1.txt");
+        Utils.writeToFile("zomg wut are u doing. LAWL", "./test1/examplefile2.txt");
+        Utils.writeToFile("LOL please dont read this.  Good job being thorough tho!", "./test1/examplefile3.txt");
     }
 
     @Test
@@ -81,30 +89,33 @@ public class TreeTester {
     }
 
     @Test
-    void testAddDirectory () throws Exception
+    void testAddDirectoryEmpty () throws Exception
     {
-        //first create some files that we can use
-        File subDir = new File("./test1");
-        subDir.mkdirs();
+        File f = new File ("emptyFolder");
+        f.mkdirs(); 
 
-        FileWriter fw = new FileWriter("./test1/examplefile1.txt");
-        fw.write("the sha of this is ... ?");
-        fw.close();
-        fw = new FileWriter("./test1/examplefile2.txt");
-        fw.write("zomg wut are u doing. LAWL");
-        fw.close(); 
-        fw = new FileWriter("./test1/examplefile3.txt");
-        fw.write("LOL please dont read this.  Good job being thorough tho!");
-        fw.close(); 
+        String hashCode = Tree.addDirectory("./emptyFolder");
 
-        Tree t = new Tree();
-        t.addDirectory("./test1");
+        String contents = Utils.readFromFile("./objects/" + hashCode);
 
-        t.save();
-        String contents = Utils.readFromFile("./objects/" + t.getHashcode());
 
-        assertTrue ("tree is missing expected files", contents.contains("./test1/examplefile1.txt"));
-        assertTrue ("tree did not hash correctly", contents.contains("6cecd98f685b1c9bfce96f2bbf3f8f381bcc717e"));
+        assertTrue("tree content should be empty but is not", contents.equals(""));
+        assertTrue("tree does not have correct sha", hashCode.equals("da39a3ee5e6b4b0d3255bfef95601890afd80709"));
+    }
+
+    @Test
+    void testAddDirectoryOneFile () throws Exception
+    {
+        File f = new File("oneFileFolder");
+        f.mkdirs();
+        Utils.writeToFile("my one file","./oneFileFolder/file.txt"); 
+
+        String hashCode = Tree.addDirectory("oneFileFolder");
+
+        String contents = Utils.readFromFile("./objects/" + hashCode);
+
+        assertTrue("tree content is incorrect", contents.equals("blob : 694703de9573b5183021bf045db51f07166aa524 : oneFileFolder/file.txt"));
+        assertTrue("tree does not have correct sha", hashCode.equals("fb28e730bd4929762d4ac8350fc192cce965e11c"));
     }
 
     @Test
