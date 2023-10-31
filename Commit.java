@@ -32,7 +32,10 @@ public class Commit {
         this.date = getDate();
         hashcode = ""; 
         writeToObjects();
-        
+
+        //reset the index file
+        Index i1 = new Index();        
+        i1.init(); 
     }
 
     public Commit(String summary, String author) throws Exception {
@@ -50,6 +53,9 @@ public class Commit {
         hashcode = ""; 
         writeToObjects();
 
+        //reset the index file
+        Index i1 = new Index(); 
+        i1.init(); 
     }
 
     //this now needs to just read everything from Index

@@ -72,9 +72,11 @@ public class Tree {
 
     public void deletePreviousFile (String fileToDelete, String previousCommitSHA) throws Exception
     {
-        String treeSHA = getTreeWhichContainsFile(fileToDelete, previousCommitSHA);
+        String commitSHA = getCommitWhichContainsFile(fileToDelete, previousCommitSHA);
 
-        ArrayList<String> treeContents = Utils.readFromFileToArrayList("./objects/" + treeSHA);
+        ArrayList<String> commitContent = Utils.readFromFileToArrayList("./objects/" + commitSHA);
+
+        ArrayList<String> treeContents = Utils.readFromFileToArrayList("./objects/" + commitContent.get(0));
 
         //copy over all the contents except for the file we want to delete
         for (String s : treeContents)
@@ -82,17 +84,30 @@ public class Tree {
             String fileName = Utils.getLastWordOfString(s);
             if (!fileName.equals(fileToDelete))
             {
-                values.add(s);
+                add(s);
             }
         }
     }
 
-    public void editPreviousFile (String fileToEdit, String previousCommitSHA)
-    {
+    public void editPreviousFile (String fileToEdit, String previousCommitSHA) throws Exception 
+    { 
+        String commitSHA = getCommitWhichContainsFile(fileToEdit, previousCommitSHA);
 
+        ArrayList<String> commitContent = Utils.readFromFileToArrayList("./objects/" + commitSHA);
+
+        ArrayList<String> treeContents = Utils.readFromFileToArrayList("./objects/" + commitContent.get(0));
+
+        Blob b = new Blob (fileToEdit); 
+
+        for (String s : treeContents)
+        {
+            String fileName = Utils.getLastWordOfString(s);
+            if (fileName.equals(fileToEdit)) add ("blob : " + b.getHashcode() + " : " + fileName);
+            else add(s);
+        }
     }
 
-    private String getTreeWhichContainsFile (String fileToGet, String previousCommitSHA) throws Exception
+    private String getCommitWhichContainsFile (String fileToGet, String previousCommitSHA) throws Exception
     {
         ArrayList<String> commitContent = Utils.readFromFileToArrayList("./objects/" + previousCommitSHA);
 
@@ -114,7 +129,7 @@ public class Tree {
             throw new Exception("reached the end of the tree without finding the file");
         }
 
-        return getTreeWhichContainsFile(fileToGet, commitContent.get(1));
+        return getCommitWhichContainsFile(fileToGet, commitContent.get(1));
     }
 
     public String getHashcode ()
