@@ -37,7 +37,6 @@ public class Index {
     {
         Tree t = new Tree ();
         t.addDirectory(folderName);
-        t.save(); 
 
         String entry = "tree : " + t.getHashcode() + " : " + folderName;
 
