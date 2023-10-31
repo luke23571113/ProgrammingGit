@@ -119,6 +119,25 @@ public class TreeTester {
     }
 
     @Test
+    void testAddDirectoryTwoFile () throws Exception
+    {
+        File f = new File("twoFileFolder");
+        f.mkdirs();
+        Utils.writeToFile("hello","./twoFileFolder/file1.txt"); 
+        Utils.writeToFile("hello hello", "twoFileFolder/file2.txt");
+
+        String hashCode = Tree.addDirectory("twoFileFolder");
+
+        ArrayList<String> contents = Utils.readFromFileToArrayList("./objects/" + hashCode);
+
+        assertTrue("tree content is incorrect", contents.get(1).equals("blob : aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d : twoFileFolder/file1.txt"));
+        assertTrue("tree content is incorrect", contents.get(0).equals("blob : dccf719f8dad2d6f4d4d9c9e1eb6592ed8acbf24 : twoFileFolder/file2.txt"));
+
+        assertTrue("tree does not have correct sha", hashCode.equals("0d465f5839abce550e09f3442288f2694fc21ecd"));
+    }
+
+
+    @Test
     void testAddDirectoryAdvanced () throws Exception
     {
         //create all the stuff that we need
