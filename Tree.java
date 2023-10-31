@@ -70,12 +70,11 @@ public class Tree {
 
     /* STUFF FOR A  */
 
-    public void deletePreviousFile (String previousCommitSHA, String fileToDelete) throws Exception
+    public void deletePreviousFile (String fileToDelete, String previousCommitSHA) throws Exception
     {
+        String treeSHA = getTreeWhichContainsFile(fileToDelete, previousCommitSHA);
 
-        getTreeWhichContainsFile(fileToDelete, hashcode); //so i guess this only works if the tree is saved first?
-
-
+        ArrayList<String> treeContents = Utils.readFromFileToArrayList("./objects/" + treeSHA);
 
         //copy over all the contents except for the file we want to delete
         for (String s : treeContents)
@@ -88,7 +87,7 @@ public class Tree {
         }
     }
 
-    public void editPreviousFile (String fileToEdit)
+    public void editPreviousFile (String fileToEdit, String previousCommitSHA)
     {
 
     }
@@ -117,29 +116,6 @@ public class Tree {
 
         return getTreeWhichContainsFile(fileToGet, commitContent.get(1));
     }
-
-
-    private ArrayList<String> getBlobList ()
-    {
-        ArrayList<String> list = new ArrayList<String>(); 
-        for (String s : values)
-        {
-            if (Utils.getFirstWordOfString(s).equals("blob")) list.add(s);
-        }
-        return list;
-    }
-
-    private ArrayList<String> getTreeList ()
-    {
-        ArrayList<String> list = new ArrayList<String>(); 
-        for (String s : values)
-        {
-            if (Utils.getFirstWordOfString(s).equals("tree")) list.add(s);
-        }
-        return list;
-    }
-
-
 
     public String getHashcode ()
     {
