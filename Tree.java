@@ -26,17 +26,6 @@ public class Tree {
     }
 
     public void save() throws Exception {
-        //handle all of the removes first
-        for (int i = values.size() - 1; i >= 0; i--)
-        {
-            String curEntry = values.get(i);
-            String firstWord = Utils.getFirstWordOfString(curEntry);
-            if (firstWord.equals("*deleted*")) deletePreviousFile(Utils.getLastWordOfString(curEntry));
-            else if (firstWord.equals("*edited*")) editPreviousFile(Utils.getLastWordOfString(curEntry));
-            
-
-        }
-        
         String treeFileContent = Utils.arrayListToFileText(values);
 
         hashcode = Utils.getHashFromString(treeFileContent); 
@@ -81,12 +70,12 @@ public class Tree {
 
     /* STUFF FOR A  */
 
-    private void deletePreviousFile (String fileToDelete) throws Exception
+    public void deletePreviousFile (String previousCommitSHA, String fileToDelete) throws Exception
     {
-        //FIXME: upon deletion, hashcode won't be known ... 
-        String treeToSearch = getTreeWhichContainsFile(fileToDelete, hashcode); //so i guess this only works if the tree is saved first?
 
-        ArrayList<String> treeContents = Utils.readFromFileToArrayList("./objects/" + treeToSearch);
+        getTreeWhichContainsFile(fileToDelete, hashcode); //so i guess this only works if the tree is saved first?
+
+
 
         //copy over all the contents except for the file we want to delete
         for (String s : treeContents)
@@ -99,30 +88,34 @@ public class Tree {
         }
     }
 
-    private void editPreviousFile (String fileToEdit)
+    public void editPreviousFile (String fileToEdit)
     {
 
     }
 
-    private String getTreeWhichContainsFile (String fileToGet, String curTree) throws Exception
+    private String getTreeWhichContainsFile (String fileToGet, String previousCommitSHA) throws Exception
     {
-        // base case : current tree contains the file we're looking for
-        ArrayList<String> blobList = getBlobList(); 
+        ArrayList<String> commitContent = Utils.readFromFileToArrayList("./objects/" + previousCommitSHA);
 
-        for (String s : blobList)
+        ArrayList<String> treeContent = Utils.readFromFileToArrayList("./objects/" + commitContent.get(0));
+        
+        for (String s : treeContent)
         {
-            String fileName = Utils.getLastWordOfString(s);
-            if (fileToGet.equals(fileName)) return curTree;
+            if (Utils.getFirstWordOfString(s).equals("blob"))
+            {
+                if (Utils.getLastWordOfString(s).equals(fileToGet))
+                {
+                    return previousCommitSHA;
+                }
+            }
         }
 
-        ArrayList<String> treeList = getTreeList();
-        for (String s : treeList)
+        if (commitContent.get(1).equals(""))
         {
-            String treeName = Utils.getSHAofLine(s); 
-            return getTreeWhichContainsFile(fileToGet, treeName);
+            throw new Exception("reached the end of the tree without finding the file");
         }
 
-        throw new Exception ("could not find a tree that contains the requested file");
+        return getTreeWhichContainsFile(fileToGet, commitContent.get(1));
     }
 
 
