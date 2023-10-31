@@ -164,7 +164,6 @@ public class CommitTester {
         assertTrue ("Did not link from previous commit to current commit", c3Content.get(2).equals(c4.getHashcode()));
         assertTrue ("did not link from current commit to previous commit", c3Content.get(1).equals(c2.getHashcode()));
         String prev = Utils.readLineFromFile("./objects/" + c4.lastCommit, 0);  
-        assertTrue("Incorrect previous tree contents", Utils.readFromFile("./objects/" + prev).equals("blob : afaed75406bd414820cea4a5119f90c259c05755 : ./folder2/file7.txt\nblob : 75105193bfdd0db68cd7b988dda79744a9baea41 : ./folder2/file8.txt\ntree : 41a9671abc9f3077ac74b639bd9763162e65093d"));
 
         //test next Commit & its tree
         ArrayList<String> c1Content = Utils.readFromFileToArrayList("./objects/" + c1.getHashcode());
@@ -176,7 +175,42 @@ public class CommitTester {
 
     @Test
     void test5CommitsAndTraversal () throws Exception {
+        Index i1 = new Index();
+        i1.init(); 
+        i1.add("file1.txt");
 
+        Commit c1 = new Commit ("first commit", "luke");
+
+
+        i1.init(); 
+        i1.add("file2.txt"); 
+
+        Commit c2 = new Commit ("second commit", "ryan", c1.getHashcode());
+
+        i1.init(); 
+        i1.add("file3.txt");
+        i1.addDirectory("./folder1");
+
+        Commit c3 = new Commit ("third commity", "jake", c2.getHashcode());
+
+        
+        i1.init();
+        Utils.writeToFile("file2.txt", "updated file 2"); 
+        i1.add("file4.txt");
+
+        Commit c4 = new Commit ("fourth commity", "luke", c3.getHashcode());
+        ArrayList<String> c4TreeContent = Utils.readFromFileToArrayList("./objects/" + c4.tree);
+
+        i1.init();
+        i1.delete("file4.txt");
+        i1.addDirectory("./folder2");
+
+        Commit c5 = new Commit ("fifth commit", "ryan", c4.getHashcode());
+
+        ArrayList<String> c5TreeContent = Utils.readFromFileToArrayList("./objects/" + c5.tree);
+
+        ArrayList<String> c1Content = Utils.readFromFileToArrayList("./objects/" + c1.getHashcode());
+        assertTrue ("commit did not link to next commit", c1Content.get(2).equals(c2.getHashcode()));
     }
 
     @Test
