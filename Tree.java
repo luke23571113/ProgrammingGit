@@ -34,44 +34,6 @@ public class Tree {
         Utils.writeToFile(treeFileContent, "./objects/" + hashcode); 
     }
 
-    /* 
-    public String addDirectory (String directory) throws Exception
-    {
-        File dir = new File (directory);
-        if (!dir.isDirectory())
-        {
-            throw new Exception ("Invalid directory path");
-        }
-
-        Tree dirTree = new Tree(); 
-
-        File[] fileList = dir.listFiles();  //list of all the files
-
-        for (File f : fileList) //loop through each file and add tree
-        {
-            if (f.isFile ())
-            {
-                String filePath = directory + "/" + f.getName();
-                Blob b = new Blob (filePath); //are you meant to make the files a blob? ig it can't hurt ...
-
-                dirTree.add("blob : " + b.getHashcode() + " : " + filePath);
-            }
-            else if (f.isDirectory())
-            { 
-                //need to recurse 
-                Tree subTree = new Tree();
-                String tempPath = f.getPath();
-                subTree.addDirectory(tempPath);
-                subTree.save();
-
-                dirTree.add("tree : " + subTree.getHashcode() + " : " + tempPath);
-            }
-        }
-        
-        return di
-    }
-
-    */
 
     public static String addDirectory (String directory) 
     {
@@ -123,18 +85,27 @@ public class Tree {
     {
         String commitSHA = getCommitWhichContainsFile(fileToDelete, previousCommitSHA);
 
+
         ArrayList<String> commitContent = Utils.readFromFileToArrayList("./objects/" + commitSHA);
+        ArrayList<String> treeContent = Utils.readFromFileToArrayList("./objects/" + commitContent.get(0));
 
-        ArrayList<String> treeContents = Utils.readFromFileToArrayList("./objects/" + commitContent.get(0));
+        //since we already copied over all of the old files, we just need to link to the past tree
 
-        //copy over all the contents except for the file we want to delete
-        for (String s : treeContents)
+        //remove the old link to the past commit ... 
+        for (int i = 0; i < values.size(); i++)
         {
-            String fileName = Utils.getLastWordOfString(s);
-            if (!fileName.equals(fileToDelete))
+            String[] split = values.get(i).split(" : ");
+            if (split.length == 1) 
             {
-                add(s);
+                values.remove(i);
             }
+        }
+
+        if (!commitContent.get(1).equals(""))
+        {
+            ArrayList<String> pastCommitContent = Utils.readFromFileToArrayList("./objects/" + commitContent.get(1));
+
+            add ("tree : " + pastCommitContent.get(0)); //link to the commit before the one with the file we are removing
         }
     }
 
@@ -161,7 +132,7 @@ public class Tree {
         ArrayList<String> commitContent = Utils.readFromFileToArrayList("./objects/" + previousCommitSHA);
 
         ArrayList<String> treeContent = Utils.readFromFileToArrayList("./objects/" + commitContent.get(0));
-        
+
         for (String s : treeContent)
         {
             if (Utils.getFirstWordOfString(s).equals("blob"))
@@ -169,6 +140,10 @@ public class Tree {
                 if (Utils.getLastWordOfString(s).equals(fileToGet))
                 {
                     return previousCommitSHA;
+                }
+                else
+                {
+                    add(s); //all all the previous files besides from the one we want to remove to the current tree
                 }
             }
         }
