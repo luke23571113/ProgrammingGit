@@ -37,6 +37,19 @@ public class TreeTester {
         Utils.writeToFile("the sha of this is ... ?", "./test1/examplefile1.txt");
         Utils.writeToFile("zomg wut are u doing. LAWL", "./test1/examplefile2.txt");
         Utils.writeToFile("LOL please dont read this.  Good job being thorough tho!", "./test1/examplefile3.txt");
+
+
+        f = new File("oneFileFolder");
+        f.mkdirs();
+        Utils.writeToFile("my one file","./oneFileFolder/file.txt"); 
+
+        f = new File("twoFileFolder");
+        f.mkdirs();
+        Utils.writeToFile("hello","./twoFileFolder/file1.txt"); 
+        Utils.writeToFile("hello hello", "twoFileFolder/file2.txt");
+
+        f = new File("emptyFolderFolder/asd");
+        f.mkdirs(); 
     }
 
     @Test
@@ -106,10 +119,6 @@ public class TreeTester {
     @Test
     void testAddDirectoryOneFile () throws Exception
     {
-        File f = new File("oneFileFolder");
-        f.mkdirs();
-        Utils.writeToFile("my one file","./oneFileFolder/file.txt"); 
-
         String hashCode = Tree.addDirectory("oneFileFolder");
 
         String contents = Utils.readFromFile("./objects/" + hashCode);
@@ -121,10 +130,6 @@ public class TreeTester {
     @Test
     void testAddDirectoryTwoFile () throws Exception
     {
-        File f = new File("twoFileFolder");
-        f.mkdirs();
-        Utils.writeToFile("hello","./twoFileFolder/file1.txt"); 
-        Utils.writeToFile("hello hello", "twoFileFolder/file2.txt");
 
         String hashCode = Tree.addDirectory("twoFileFolder");
 
@@ -134,6 +139,20 @@ public class TreeTester {
         assertTrue("tree content is incorrect", contents.get(0).equals("blob : dccf719f8dad2d6f4d4d9c9e1eb6592ed8acbf24 : twoFileFolder/file2.txt"));
 
         assertTrue("tree does not have correct sha", hashCode.equals("0d465f5839abce550e09f3442288f2694fc21ecd"));
+    }
+
+    @Test
+    void testAddDirectoryEmptyFolder () throws Exception
+    {
+        String hashCode = Tree.addDirectory("emptyFolderFolder");
+
+        ArrayList<String> contents = Utils.readFromFileToArrayList("./objects/" + hashCode);
+
+        assertTrue ("tree content is incorrect", contents.get(0).equals("tree : da39a3ee5e6b4b0d3255bfef95601890afd80709 : emptyFolderFolder"));
+
+        File subFolder = new File ("./objects/" + Utils.getSHAofLine(contents.get(0)));
+
+        assertTrue("successfully added sub folder into objects", subFolder.exists());
     }
 
 
