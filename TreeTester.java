@@ -148,7 +148,7 @@ public class TreeTester {
 
         ArrayList<String> contents = Utils.readFromFileToArrayList("./objects/" + hashCode);
 
-        assertTrue ("tree content is incorrect", contents.get(0).equals("tree : da39a3ee5e6b4b0d3255bfef95601890afd80709 : emptyFolderFolder"));
+        assertTrue ("tree content is incorrect", contents.get(0).equals("tree : da39a3ee5e6b4b0d3255bfef95601890afd80709 : emptyFolderFolder/asd"));
 
         File subFolder = new File ("./objects/" + Utils.getSHAofLine(contents.get(0)));
 

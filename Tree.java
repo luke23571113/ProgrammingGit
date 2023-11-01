@@ -61,11 +61,9 @@ public class Tree {
                 }
                 else if (f.isDirectory())
                 {
-                    Tree subTree = new Tree(); 
                     String tempPath = f.getPath(); 
                     String subTreeHashCode = Tree.addDirectory(tempPath); 
-                    subTree.add("tree : " + subTreeHashCode + " : " + tempPath);
-                    subTree.save(); 
+                    dirTree.add("tree : " + subTreeHashCode + " : " + tempPath);
                 }
             }
 
