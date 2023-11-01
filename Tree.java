@@ -85,15 +85,14 @@ public class Tree {
 
 
         ArrayList<String> commitContent = Utils.readFromFileToArrayList("./objects/" + commitSHA);
-        ArrayList<String> treeContent = Utils.readFromFileToArrayList("./objects/" + commitContent.get(0));
 
         //since we already copied over all of the old files, we just need to link to the past tree
 
         //remove the old link to the past commit ... 
-        for (int i = 0; i < values.size(); i++)
+        for (int i = values.size() -1 ; i >= 0; i--)
         {
             String[] split = values.get(i).split(" : ");
-            if (split.length == 1) 
+            if (split.length == 2) 
             {
                 values.remove(i);
             }
@@ -110,19 +109,29 @@ public class Tree {
     public void editPreviousFile (String fileToEdit, String previousCommitSHA) throws Exception 
     { 
         String commitSHA = getCommitWhichContainsFile(fileToEdit, previousCommitSHA);
-
         ArrayList<String> commitContent = Utils.readFromFileToArrayList("./objects/" + commitSHA);
 
-        ArrayList<String> treeContents = Utils.readFromFileToArrayList("./objects/" + commitContent.get(0));
-
-        Blob b = new Blob (fileToEdit); 
-
-        for (String s : treeContents)
+        //remove the old link to the past commit ... 
+        for (int i = values.size() -1 ; i >= 0; i--)
         {
-            String fileName = Utils.getLastWordOfString(s);
-            if (fileName.equals(fileToEdit)) add ("blob : " + b.getHashcode() + " : " + fileName);
-            else add(s);
+            String[] split = values.get(i).split(" : ");
+            if (split.length == 2) 
+            {
+                values.remove(i);
+            }
         }
+
+        if (!commitContent.get(1).equals(""))
+        {
+            ArrayList<String> pastCommitContent = Utils.readFromFileToArrayList("./objects/" + commitContent.get(1));
+
+            add ("tree : " + pastCommitContent.get(0)); //link to the commit before the one with the file we are removing
+        }
+
+        //now need to add the updated file 
+        Blob b = new Blob(fileToEdit);
+
+        add ("blob : " + b.getHashcode() + " : " + fileToEdit);
     }
 
     private String getCommitWhichContainsFile (String fileToGet, String previousCommitSHA) throws Exception
@@ -131,13 +140,16 @@ public class Tree {
 
         ArrayList<String> treeContent = Utils.readFromFileToArrayList("./objects/" + commitContent.get(0));
 
+        //boolean is needed so that we can add all the previous files to the current tree
+        boolean isInCurrentTree = false;  
+
         for (String s : treeContent)
         {
             if (Utils.getFirstWordOfString(s).equals("blob"))
             {
                 if (Utils.getLastWordOfString(s).equals(fileToGet))
                 {
-                    return previousCommitSHA;
+                    isInCurrentTree = true; 
                 }
                 else
                 {
@@ -145,6 +157,12 @@ public class Tree {
                 }
             }
         }
+
+        if (isInCurrentTree)
+        {
+            return previousCommitSHA; 
+        }
+
 
         if (commitContent.get(1).equals(""))
         {

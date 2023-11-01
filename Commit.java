@@ -65,6 +65,11 @@ public class Commit {
 
         Tree currentIndexTree = new Tree();
 
+        if (!lastCommit.equals(""))
+        {
+            currentIndexTree.add("tree : " + getTreeFromCommit(lastCommit));
+        }
+
         for (String s : indexContents)
         {
             String type = Utils.getFirstWordOfString(s);
@@ -73,15 +78,7 @@ public class Commit {
             else if (type.equals("*edited*")) currentIndexTree.editPreviousFile(Utils.getLastWordOfString(s), lastCommit); 
         }
 
-        if (!Utils.readFromFile("./index").equals(""))
-        {
-            System.out.println();
-        }
 
-        if (!lastCommit.equals(""))
-        {
-            currentIndexTree.add("tree : " + getTreeFromCommit(lastCommit));
-        }
         currentIndexTree.save(); 
         tree = currentIndexTree.getHashcode(); 
         return currentIndexTree.getHashcode();

@@ -99,4 +99,25 @@ public class Utils {
         String[] arr = line.split(" : ");
         return arr[1];
     }
+
+    public static int getLineWhichContains (ArrayList<String> list, String s) 
+    {
+        for (int i = 0; i < list.size(); i++)
+        {
+            if (list.get(i).contains(s)) return i;
+        }
+        return -1; 
+    }
+
+    public static boolean arrayListContains (ArrayList<String> list, String s)
+    {
+        for (int i = 0; i < list.size(); i++)
+        {
+            if (list.get(i).contains(s)) 
+            {
+                return true; 
+            }
+        }
+        return false; 
+    }
 }

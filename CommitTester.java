@@ -174,6 +174,27 @@ public class CommitTester {
     }
 
     @Test
+    void testCommitDeleteNoLink () throws Exception
+    {
+        Index i1 = new Index();
+        i1.init(); 
+        i1.add("file1.txt");
+        i1.add("file3.txt");
+        Commit c1 = new Commit ("first commit", "luke");
+
+        i1.init(); 
+        i1.add("file2.txt"); 
+        i1.delete("file1.txt"); 
+
+        Commit c2 = new Commit ("second commit", "ryan", c1.getHashcode());
+
+        ArrayList<String> treeContent = Utils.readFromFileToArrayList("./objects/" + c2.tree);
+
+        assertTrue ("did not copy over previous files", Utils.arrayListContains(treeContent,"blob : fd22cb7ca77445e0e501d5655919fa39624df7dd : file3.txt"));
+        assertTrue("did not delete the tree", !Utils.arrayListContains(treeContent, "file1.txt"));
+    }
+
+    @Test
     void test5CommitsAndTraversal () throws Exception {
         Index i1 = new Index();
         i1.init(); 
