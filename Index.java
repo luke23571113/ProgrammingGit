@@ -35,10 +35,9 @@ public class Index {
 
     public void addDirectory (String folderName) throws Exception
     {
-        Tree t = new Tree ();
-        t.addDirectory(folderName);
+        String hashCode = Tree.addDirectory(folderName);
 
-        String entry = "tree : " + t.getHashcode() + " : " + folderName;
+        String entry = "tree : " + hashCode  + " : " + folderName;
 
         if (!entries.contains(entry)) entries.add(entry);
         updateIndex(); 
