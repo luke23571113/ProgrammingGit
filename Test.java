@@ -23,9 +23,11 @@ public class Test {
         Commit c2 = new Commit ("second commit", "jake", c1.getHashcode());
         */
 
-        Tree t = new Tree(); 
-        t.addDirectory("folder2");
+        // Tree t = new Tree(); 
+        // t.addDirectory("folder2");
 
-        String entry = "tree : " + t.getHashcode() + " : " + "folder2";
+        // String entry = "tree : " + t.getHashcode() + " : " + "folder2";
+        
+        Utils.writeToFile("file2.txt", "blkasdlkjasldkjlkj");
     }
 }

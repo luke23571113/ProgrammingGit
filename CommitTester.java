@@ -241,7 +241,8 @@ public class CommitTester {
 
         
         i1.init();
-        Utils.writeToFile("file2.txt", "updated file 2"); 
+        Utils.writeToFile("updated file 2", "file2.txt"); 
+        i1.edit("file2.txt"); 
         i1.add("file4.txt");
 
         Commit c4 = new Commit ("fourth commity", "luke", c3.getHashcode());
@@ -254,7 +255,11 @@ public class CommitTester {
         Commit c5 = new Commit ("fifth commit", "ryan", c4.getHashcode());
         ArrayList<String> c5TreeContent = Utils.readFromFileToArrayList("./objects/" + c5.tree);
 
-        System.out.println(); 
+        assertTrue ("did not link back correctly after deleting", Utils.arrayListContains(c5TreeContent, "tree : " + c3.tree));
+        assertTrue ("did not delete file4 correctly", !Utils.arrayListContains(c5TreeContent, "file4.txt"));
+
+        assertTrue ("did not add the correct blob for the edited file", Utils.arrayListContains(c4TreeContent, "blob : 3dd2fbb6d6ac7b45a401d1d4bed24b89146329de : file2.txt"));
+        assertTrue("did not link back correctly after editing", Utils.arrayListContains(c4TreeContent,"tree : " + c1.tree));
     }
 
     @Test

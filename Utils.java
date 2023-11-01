@@ -31,14 +31,14 @@ public class Utils {
         return sb.toString();
     }
 
-    public static void writeToFile (String fileContent, String fileName) throws Exception 
+    public static void writeToFile (String contents, String filePath) throws Exception 
     {
-        File f = new File (fileName);
-        f.createNewFile(); //does this work
+        File f = new File(filePath);
+        f.createNewFile();
 
-        FileWriter fw = new FileWriter(fileName);
-        fw.write(fileContent);
-        fw.close(); 
+        FileWriter fw = new FileWriter(f);
+        fw.write(contents);
+        fw.close();
     }
 
     public static ArrayList<String> readFromFileToArrayList (String fileName) throws Exception
